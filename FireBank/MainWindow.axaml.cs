@@ -8,5 +8,14 @@ namespace FireBank
         {
             InitializeComponent();
         }
+
+        private void LoginButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+
+        }
+
+        private void RegisterButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+        }
     }
 }

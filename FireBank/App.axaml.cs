@@ -1,6 +1,9 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using FireBank.Services;
+using FireBank.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FireBank
 {
@@ -13,12 +16,22 @@ namespace FireBank
 
         public override void OnFrameworkInitializationCompleted()
         {
+            var services = new ServiceCollection();
+            services.AddSingleton<NavigationService>();
+            services.AddTransient<LoginViewModel>();
+            services.AddTransient<RegisterViewModel>();
+            services.AddTransient<MainWindowViewModel>();
+            services.AddTransient<DashboardViewModel>();
+
+            var provider = services.BuildServiceProvider();
+
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainWindow();
+                desktop.MainWindow = new MainWindow
+                {
+                    DataContext = provider.GetRequiredService<MainWindowViewModel>()
+                };
             }
-
-            base.OnFrameworkInitializationCompleted();
         }
     }
 }
