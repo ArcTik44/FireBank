@@ -2,12 +2,59 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewmodels="using:FireBank.ViewModels"
-        x:DataType="viewmodels:DashboardViewModel"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
         x:Class="FireBank.Dashboard"
         Title="Dashboard">
-    <Grid>
-		<TextBox Text="{Binding Title}"></TextBox>
-    </Grid>
+    <StackPanel>
+        <TextBlock Text="">
+			
+        </TextBlock>
+        <TabControl HorizontalAlignment="Center">
+            <TabItem Header="Účty">
+                <StackPanel>
+                    <ListBox x:Name="StandardAccountsListBox">
+				        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <TextBlock Text="Účet 1" FontWeight="Bold"/>
+                                    <TextBlock Text="0,00 CZK"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <ListBox x:Name="SavingsAccountsListBox">
+				        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <TextBlock Text="Spořící Účet 1" FontWeight="Bold"/>
+                                    <TextBlock Text="0,00 CZK"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Transakce">
+                <StackPanel>
+                    <Button HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                        Nová transakce
+                    </Button>
+					<ListBox x:Name="TransactionsListBox">
+						<ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <TextBlock Text="Spořící Účet 1" FontWeight="Bold"/>
+                                    <TextBlock Text="0,00 CZK"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Nastavení"></TabItem>
+        </TabControl>
+    </StackPanel>
+        
+    
 </Window>

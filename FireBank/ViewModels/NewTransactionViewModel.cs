@@ -4,8 +4,7 @@ using System.Text;
 
 namespace FireBank.ViewModels
 {
-    public partial class RegisterViewModel
+    internal class NewTransactionViewModel
     {
-
     }
 }

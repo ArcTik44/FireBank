@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using FireBank.Views;
 
 namespace FireBank
 {
@@ -9,13 +10,16 @@ namespace FireBank
             InitializeComponent();
         }
 
-        private void LoginButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void GoToLogin_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-
+            new Login().Show();
+            Close();
         }
 
-        private void RegisterButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void GoToRegister_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
+            new Register().Show();
+            Close();
         }
     }
 }

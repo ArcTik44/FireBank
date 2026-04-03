@@ -1,12 +1,10 @@
-﻿using GalaSoft.MvvmLight;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace FireBank.ViewModels
 {
-    public partial class LoginViewModel : ViewModelBase
+    public partial class LoginViewModel
     {
-        public string Title { get; } = "Login page";
     }
 }

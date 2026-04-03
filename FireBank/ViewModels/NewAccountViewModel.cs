@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FireBank.Services
+namespace FireBank.ViewModels
 {
-    internal class DatabaseService
+    internal class NewAccountViewModel
     {
     }
 }

@@ -1,17 +1,20 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewmodels="using:FireBank.ViewModels"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="FireBank.Views.Login"
-        x:DataType="viewmodels:LoginViewModel"
-        Title="Login">
- <StackPanel VerticalAlignment="Center" Spacing="10">
-        <TextBlock Text="Username:" />
-        <TextBox Name="UsernameTextBox" Width="200" />
-        <TextBlock Text="Password:" />
-        <TextBox PasswordChar="*" Name="PasswordBox" Width="200" />
-        <Button Content="Login" Width="100" Click="LoginButton_Click" />
- </StackPanel>
+        Title="Přihlášení"
+        Width="800" Height="600">
+
+    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="8" Width="220">
+        <TextBlock Text="Přihlášení" FontSize="20" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+        <TextBlock Text="Email:"/>
+        <TextBox Name="EmailTextBox"/>
+        <TextBlock Text="Heslo:"/>
+        <TextBox Name="PasswordTextBox" PasswordChar="*"/>
+        <Button Content="Přihlásit se" HorizontalContentAlignment="Center"
+                HorizontalAlignment="Stretch" Margin="0,8,0,0"
+                Click="GoToLogin_Click"/>
+        <Button Content="Nemám účet – Registrovat se" HorizontalContentAlignment="Center"
+                HorizontalAlignment="Stretch"
+                Click="GoToRegister_Click"/>
+    </StackPanel>
 </Window>

@@ -1,35 +1,34 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewmodels="using:FireBank.ViewModels"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="FireBank.Views.Register"
-        x:DataType="viewmodels:RegisterViewModel"
-        Title="Register">
+        Title="Registrace"
+        Width="800" Height="600">
 
-    <Grid ColumnDefinitions="200,*" RowDefinitions="Auto,*">
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="New User Registration" />
-		
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="First Name:" />
-        <TextBox Grid.Row="1" Grid.Column="1" Name="FirstNameTextBox" Width="200" />
-        
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="First Name:" />
-        <TextBox Grid.Row="2" Grid.Column="1" Name="FirstNameTextBox" Width="200" />
-        
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="Last Name:" />
-        <TextBox Grid.Row="3" Grid.Column="1" Name="LastNameTextBox" Width="200" />
-        
-        <TextBlock Grid.Row="4" Grid.Column="0" Text="Email:" />
-        <TextBox Grid.Row="4" Grid.Column="1" Name="EmailTextBox" Width="200" />
-        
-        <TextBlock Grid.Row="5" Grid.Column="0" Text="Password:" />
-        <TextBox Grid.Row="5" Grid.Column="1" PasswordChar="*" Name="PasswordBox" Width="200" />
-        
-        <TextBlock Grid.Row="6" Grid.Column="0" Text="Confirm Password:" />
-        <TextBox Grid.Row="6" Grid.Column="1" PasswordChar="*" Name="ConfirmPasswordBox" Width="200" />
-        
-        <CheckBox x:Name="AcceptTermsCheckBox" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Content="Accepting Terms of Service"/>
-        <Button Grid.Row="8" IsEnabled="{Binding ElementName=AcceptTermsCheckBox}" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalContentAlignment="Center" Content="Register" Width="100" Click="RegisterButton_Click"/>
-    </Grid>
+    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="8" Width="260" Margin="0,12">
+        <TextBlock Text="Registrace" FontSize="20" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+
+        <TextBlock Text="Jméno:"/>
+        <TextBox Name="FirstNameTextBox"/>
+
+        <TextBlock Text="Příjmení:"/>
+        <TextBox Name="LastNameTextBox"/>
+
+        <TextBlock Text="Email:"/>
+        <TextBox Name="EmailTextBox"/>
+
+        <TextBlock Text="Heslo:"/>
+        <TextBox Name="PasswordBox" PasswordChar="*"/>
+
+        <TextBlock Text="Potvrzení hesla:"/>
+        <TextBox Name="ConfirmPasswordBox" PasswordChar="*"/>
+
+        <CheckBox Name="AcceptTermsCheckBox" Content="Souhlasím s podmínkami služby" Margin="0,8,0,0"/>
+
+        <Button Content="Registrovat se"
+                HorizontalContentAlignment="Center"
+                HorizontalAlignment="Stretch"
+                IsEnabled="{Binding #AcceptTermsCheckBox.IsChecked}"
+                Click="GoToLogin_Click"
+                Margin="0,4,0,0"/>
+    </StackPanel>
 </Window>

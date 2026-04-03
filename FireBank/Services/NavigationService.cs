@@ -1,8 +1,6 @@
 ﻿using Avalonia.Controls;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FireBank.Services
 {
@@ -14,6 +12,11 @@ namespace FireBank.Services
         public NavigationService(IServiceProvider provider)
         {
             _provider = provider;
+        }
+
+        public void SetCurrentWindow(Window window)
+        {
+            _currentWindow = window;
         }
 
         public void NavigateTo<TWindow, TViewModel>()
