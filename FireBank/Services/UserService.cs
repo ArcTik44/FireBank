@@ -24,6 +24,11 @@ namespace FireBank.Services
             this._db.Dispose();
         }
 
+        public bool EmailExists(string email)
+        {
+            return _collection.Exists(u => u.Email == email);
+        }
+
         public IEnumerable<User> GetAllUsers()
         {
             return _collection.FindAll();
@@ -40,14 +45,14 @@ namespace FireBank.Services
             _collection.Insert(user);
         }
 
-        public bool Login(string email, string password)
+        public User ? Login(string email, string password)
         {
             var user = _collection.FindOne(u => u.Email == email);
             if (user == null || !Argon2.Verify(user.PasswordHash, password))
             {
-                return false;
+                return null;
             }
-            return true;
+            return user;
         }
 
         public bool UpdatePassword(ObjectId userId, string newPassword)

@@ -8,10 +8,4 @@ public partial class Register : Window
     {
         InitializeComponent();
     }
-
-    private void GoToLogin_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
-    {
-        new Login().Show();
-        Close();
-    }
 }

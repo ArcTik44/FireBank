@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FireBank.ViewModels
 {
-    internal class NewAccountViewModel : ObservableObject
+    public class NewBankAccountViewModel : ObservableObject
     {
     }
 }

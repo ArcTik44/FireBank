@@ -1,8 +1,6 @@
 ﻿using FireBank.Models;
 using LiteDB;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace FireBank.Services
 {
@@ -11,6 +9,7 @@ namespace FireBank.Services
         User? GetUser(ObjectId userId);
         void Insert(User user,string password_plain);
         bool UpdatePassword(ObjectId userId, string newPassword);
-        bool Login(string email, string password);
+        bool EmailExists(string email);
+        User? Login(string email, string password);
     }
 }

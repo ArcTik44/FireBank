@@ -7,7 +7,7 @@ using System.Text;
 
 namespace FireBank.Services
 {
-    internal class TransactionService : ITransactionService, IDisposable
+    public class TransactionService : ITransactionService, IDisposable
     {
         private readonly LiteDatabase _db;
         private readonly ILiteCollection<Transaction> _collection;

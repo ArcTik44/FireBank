@@ -1,92 +1,35 @@
 ﻿using FireBank.Models;
 using FireBank.Services;
-using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.ObjectModel;
-using LiteDB;
-using System;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Views;
+using System.Windows.Input;
+using ReactiveUI;
 
 namespace FireBank.ViewModels
 {
-    public partial class DashboardViewModel : ObservableObject
+    public partial class DashboardViewModel : ViewModelBase
     {
-        private readonly IAccountService accountService;
-        private readonly IUserService userService;
-        private readonly ITransactionService transactionService;
-        private User user;
-        private AccountNumberGenerator accountNumberGenerator;
+        private readonly AccountService _accountService;
+        private readonly UserService _userService;
+        private readonly TransactionService _transactionService;
+        private readonly NavigationService _navigationService;
+        private User _user;
+        private AccountNumberGenerator _accountNumberGenerator;
 
-        [ObservableProperty]
-        private ObservableCollection<Account> accounts;
+        public ICommand CreateAccountCommand { get; }
+        public ICommand CreateTransaction {  get;}
 
-        [ObservableProperty]
-        private ObservableCollection<Transaction> transactions;
-
-        public DashboardViewModel(IAccountService accountService, IUserService userService, ITransactionService transactionService)
+        public DashboardViewModel(AccountService accountService, UserService userService, TransactionService transactionService, 
+            NavigationService navigationService, User user)
         {
-            this.accountNumberGenerator = new AccountNumberGenerator();
-            this.accountService = accountService;
-            this.userService = userService;
-            this.transactionService = transactionService;
-            LoadTransactions();
-            LoadAccounts();
-        }
-
-        private void LoadAccounts()
-        {
-            accounts = (ObservableCollection<Account>)this.accountService.GetAccountsByUserId(this.user.Id);
-        }
-
-        private void LoadTransactions() {
-            foreach (var account in accounts)
-            {
-              foreach (var transaction in this.transactionService.GetTransactionsByAccountId(account.Id))
-              {
-                transactions.Add(transaction);
-              }
-            }
-            
-        }
-
-        [RelayCommand]
-        public void CreateAccount(ObjectId userId)
-        {
-            
-            this.accountService.Insert(new Account
-            {
-                Id = ObjectId.NewObjectId(),
-                AccountNumber = accountNumberGenerator.GenerateNational(),
-                Balance = 0,
-                
-                UserId = userId
-            });
-        }
-
-        [RelayCommand]
-        public void CreateTransaction(string targetAccountNumber, string srcAccountNumber,
-            decimal amount, string note, Currency currency)
-        {
-
-            var srcAccount = accountService.GetAccountByAccountNumber(srcAccountNumber);
-            var tgtAccount = accountService.GetAccountByAccountNumber(targetAccountNumber);
-            if (srcAccount != null && tgtAccount != null)
-            {
-                if (tgtAccount.Currency != srcAccount.Currency)
-                {
-                    throw new InvalidOperationException("Účty musí mít stejnou měnu");
-                }
-
-                this.transactionService.Insert(new Transaction
-                {
-                    Id = ObjectId.NewObjectId(),
-                    FromAccountId = srcAccount.Id,
-                    ToAccountId = tgtAccount.Id,
-                    Note = note,
-                    Amount = amount,
-                    Currency = currency,
-                });
-            }    
-           
+            _accountNumberGenerator = new AccountNumberGenerator();
+            _accountService = accountService;
+            _navigationService = navigationService;
+            _userService = userService;
+            _transactionService = transactionService;
+            _user = user;
+            CreateAccountCommand = ReactiveCommand.Create(() => _navigationService.NavigateTo<NewBankAccount,NewBankAccountViewModel>());
+            CreateTransaction = ReactiveCommand.Create(() => _navigationService.NavigateTo<NewTransaction, NewTransactionViewModel>());
         }
 
     }

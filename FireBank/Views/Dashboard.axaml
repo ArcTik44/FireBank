@@ -7,9 +7,6 @@
         x:DataType="vm:DashboardViewModel"
         xmlns:vm="using:FireBank.ViewModels"
         Title="Dashboard">
-    <Window.DataContext>
-		<vm:DashboardViewModel />
-    </Window.DataContext>
     <StackPanel>
         <TextBlock Text="">
 			

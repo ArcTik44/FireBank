@@ -1,20 +1,22 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:viewmodels="using:FireBank.ViewModels"
         x:Class="FireBank.Views.Login"
+        x:DataType="viewmodels:LoginViewModel"
         Title="Přihlášení"
         Width="800" Height="600">
 
     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="8" Width="220">
         <TextBlock Text="Přihlášení" FontSize="20" HorizontalAlignment="Center" Margin="0,0,0,12"/>
         <TextBlock Text="Email:"/>
-        <TextBox Name="EmailTextBox"/>
+        <TextBox Text="{Binding Email}"/>
         <TextBlock Text="Heslo:"/>
         <TextBox Name="PasswordTextBox" PasswordChar="*"/>
         <Button Content="Přihlásit se" HorizontalContentAlignment="Center"
                 HorizontalAlignment="Stretch" Margin="0,8,0,0"
-                Click="GoToLogin_Click"/>
+                Command="{Binding LoginCommand}"/>
         <Button Content="Nemám účet – Registrovat se" HorizontalContentAlignment="Center"
                 HorizontalAlignment="Stretch"
-                Click="GoToRegister_Click"/>
+                Command="{Binding GoToRegisterCommand}"/>
     </StackPanel>
 </Window>

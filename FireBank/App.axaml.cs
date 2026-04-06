@@ -27,6 +27,8 @@ namespace FireBank
             {
                 desktop.MainWindow = new MainWindow();
             }
+            services.AddSingleton<DatabaseService>();
+            services.AddSingleton<UserService>();
         }
         private static void ConfigureServices(IServiceCollection services)
         {
@@ -40,14 +42,13 @@ namespace FireBank
             // Singleton – sdílíme jednu instanci databáze
             services.AddSingleton<IAccountService>(_ => new AccountService(dbPath));
             services.AddSingleton<ITransactionService>(_ => new TransactionService(dbPath));
-            services.AddSingleton<IUserService>(_ => new UserService(dbPath));
 
             // ViewModely a okna
             services.AddTransient<DashboardViewModel>();
             services.AddTransient<LoginViewModel>();
             services.AddTransient<RegisterViewModel>();
             services.AddTransient<NewTransactionViewModel>();
-            services.AddTransient<NewAccountViewModel>();
+            services.AddTransient<NewBankAccountViewModel>();
             services.AddTransient<MainWindow>();
         }
     }

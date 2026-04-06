@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace FireBank;
 
-public partial class NewAccount : Window
+public partial class NewBankAccount : Window
 {
-    public NewAccount()
+    public NewBankAccount()
     {
         InitializeComponent();
     }

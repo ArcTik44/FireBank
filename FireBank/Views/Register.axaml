@@ -1,34 +1,49 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:viewmodels="using:FireBank.ViewModels"
         x:Class="FireBank.Views.Register"
         Title="Registrace"
-        Width="800" Height="600">
+        Width="800" Height="600"
+        x:DataType="viewmodels:RegisterViewModel"
+        >
 
     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="8" Width="260" Margin="0,12">
         <TextBlock Text="Registrace" FontSize="20" HorizontalAlignment="Center" Margin="0,0,0,12"/>
 
         <TextBlock Text="Jméno:"/>
-        <TextBox Name="FirstNameTextBox"/>
+        <TextBox Text="{Binding FirstName}"/>
 
         <TextBlock Text="Příjmení:"/>
-        <TextBox Name="LastNameTextBox"/>
+        <TextBox Text="{Binding LastName}"/>
 
         <TextBlock Text="Email:"/>
-        <TextBox Name="EmailTextBox"/>
+        <TextBox Text="{Binding Email}"/>
 
         <TextBlock Text="Heslo:"/>
-        <TextBox Name="PasswordBox" PasswordChar="*"/>
+        <TextBox Text="{Binding Password}" PasswordChar="*"/>
 
         <TextBlock Text="Potvrzení hesla:"/>
-        <TextBox Name="ConfirmPasswordBox" PasswordChar="*"/>
+        <TextBox Text="{Binding ConfirmPassword}" PasswordChar="*"/>
 
-        <CheckBox Name="AcceptTermsCheckBox" Content="Souhlasím s podmínkami služby" Margin="0,8,0,0"/>
+        <CheckBox IsChecked="{Binding AcceptTerms}">
+            Souhlasím se zpracováním osobních údajů pro účely registrace a poskytování služeb FireBank.
+        </CheckBox>
 
+        <TextBlock Text="{Binding ErrorMessage}" Foreground="Red"
+                   IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                   TextWrapping="Wrap" />
+
+        <Button Content="Zpět na přihlášení"
+                HorizontalAlignment="Center"
+                HorizontalContentAlignment="Stretch"
+                Command="{Binding GoToLoginCommand}"/>
+			
         <Button Content="Registrovat se"
                 HorizontalContentAlignment="Center"
                 HorizontalAlignment="Stretch"
-                IsEnabled="{Binding #AcceptTermsCheckBox.IsChecked}"
-                Click="GoToLogin_Click"
+                IsEnabled="{Binding AcceptTerms}"
+                Command="{Binding RegisterCommand}"
                 Margin="0,4,0,0"/>
+
     </StackPanel>
 </Window>

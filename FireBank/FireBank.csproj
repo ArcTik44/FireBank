@@ -23,6 +23,13 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.5" />
     <PackageReference Include="Microsoft.NETCore.App" Version="2.2.8" />
     <PackageReference Include="Microsoft.NETCore.Jit" Version="2.0.8" />
+    <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
     <PackageReference Include="ReactiveUI" Version="23.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\NewBankAccount.axaml.cs">
+      <DependentUpon>NewBankAccount.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>
