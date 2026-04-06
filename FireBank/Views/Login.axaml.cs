@@ -1,18 +1,22 @@
 using Avalonia.Controls;
+using FireBank.Services;
+using FireBank.ViewModels;
 
 namespace FireBank.Views;
 
 public partial class Login : Window
 {
 
-    public Login()
+    public Login(LoginViewModel loginViewModel)
     {
         InitializeComponent();
+        DataContext = loginViewModel;
     }
+    public Login(): this(new LoginViewModel(new UserService("firebank.db"))){}
 
     private void GoToLogin_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        if (UsernameTextBox.Text == "admin" && PasswordTextBox.Text == "admin") {
+        if (EmailTextBox.Text == "admin" && PasswordTextBox.Text == "admin") {
             new Dashboard().Show();
             Close();
         }

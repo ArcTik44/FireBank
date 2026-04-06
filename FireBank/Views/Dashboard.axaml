@@ -4,7 +4,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
         x:Class="FireBank.Dashboard"
+        x:DataType="vm:DashboardViewModel"
+        xmlns:vm="using:FireBank.ViewModels"
         Title="Dashboard">
+    <Window.DataContext>
+		<vm:DashboardViewModel />
+    </Window.DataContext>
     <StackPanel>
         <TextBlock Text="">
 			
@@ -16,7 +21,7 @@
 				        <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" Spacing="8">
-                                    <TextBlock Text="Účet 1" FontWeight="Bold"/>
+                                    <TextBlock Text="Účet1" FontWeight="Bold"/>
                                     <TextBlock Text="0,00 CZK"/>
                                 </StackPanel>
                             </DataTemplate>

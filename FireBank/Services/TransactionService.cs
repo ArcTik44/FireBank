@@ -2,6 +2,7 @@
 using LiteDB;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace FireBank.Services
@@ -18,22 +19,17 @@ namespace FireBank.Services
         }
         public void Dispose()
         {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Transaction> GetTransactionByUserId(ObjectId userId)
-        {
-            throw new NotImplementedException();
+            _db.Dispose();
         }
 
         public IEnumerable<Transaction> GetTransactionsByAccountId(ObjectId accountId)
         {
-            throw new NotImplementedException();
+            return _collection.Query().Where(tr=>tr.FromAccountId.Equals(accountId)).ToList();
         }
 
         public void Insert(Transaction transaction)
         {
-            throw new NotImplementedException();
+            _collection.Insert(transaction);
         }
     }
 }

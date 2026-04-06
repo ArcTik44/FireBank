@@ -39,12 +39,15 @@ namespace FireBank
 
             // Singleton – sdílíme jednu instanci databáze
             services.AddSingleton<IAccountService>(_ => new AccountService(dbPath));
+            services.AddSingleton<ITransactionService>(_ => new TransactionService(dbPath));
+            services.AddSingleton<IUserService>(_ => new UserService(dbPath));
 
             // ViewModely a okna
             services.AddTransient<DashboardViewModel>();
             services.AddTransient<LoginViewModel>();
             services.AddTransient<RegisterViewModel>();
-            se
+            services.AddTransient<NewTransactionViewModel>();
+            services.AddTransient<NewAccountViewModel>();
             services.AddTransient<MainWindow>();
         }
     }

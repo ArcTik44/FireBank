@@ -14,7 +14,7 @@ public class Transaction
     public Currency Currency { get; set; }
 
     [BsonIgnore]
-    public string? FromAccountNumber { get; set; }
+    public string FromAccountNumber { get; set; } = string.Empty;
     [BsonIgnore]
-    public string? ToAccountNumber { get; set; }
+    public string ToAccountNumber { get; set; } = string.Empty;
 }

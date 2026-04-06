@@ -27,11 +27,6 @@ namespace FireBank.Services
             _db.Dispose();
         }
 
-        public Account ? GetAccountByAccountId(ObjectId accountId)
-        {
-            return _collection.FindById(accountId);
-        }
-
         public Account ? GetAccountByAccountNumber(string accountNumber)
         {
             return _collection.Query().Where(acc => acc.AccountNumber == accountNumber).FirstOrDefault();
@@ -42,10 +37,33 @@ namespace FireBank.Services
             return _collection.Query().Where(acc=>acc.UserId == userId).ToList();
         }
 
-        public void Insert(Account account, ObjectId userId)
+        public void Insert(Account account)
         {
-            account.UserId = userId;
             _collection.Insert(account);
+        }
+
+        public bool DepositBalance(ObjectId accountId, decimal amount)
+        {
+            Account updatedAcc = _collection.FindById(accountId);
+            if (updatedAcc == null)
+            {
+                return false;
+            }
+            updatedAcc.Balance += amount;
+            _collection.Update(updatedAcc);
+            return true;
+        }
+
+        public bool WithdrawBalance(ObjectId accountId, decimal amount)
+        {
+            Account updatedAcc = _collection.FindById(accountId);
+            if (updatedAcc == null || updatedAcc.Balance < amount)
+            {
+                return false;
+            }
+            updatedAcc.Balance -= amount;
+            _collection.Update(updatedAcc);
+            return true;
         }
     }
 }

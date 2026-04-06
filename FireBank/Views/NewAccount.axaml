@@ -6,6 +6,6 @@
         x:Class="FireBank.NewAccount"
         Title="NewAccount">
   <StackPanel>
-	  
+	  <TextBlock>New Account page</TextBlock>
   </StackPanel>
 </Window>

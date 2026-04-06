@@ -13,15 +13,18 @@ namespace FireBank.ViewModels
         private readonly IAccountService accountService;
         private readonly IUserService userService;
         private readonly ITransactionService transactionService;
+        private User user;
+        private AccountNumberGenerator accountNumberGenerator;
 
         [ObservableProperty]
-        private ObservableCollection<Account> accounts = [];
+        private ObservableCollection<Account> accounts;
 
         [ObservableProperty]
-        private ObservableCollection<Transaction> transactions = [];
+        private ObservableCollection<Transaction> transactions;
 
         public DashboardViewModel(IAccountService accountService, IUserService userService, ITransactionService transactionService)
         {
+            this.accountNumberGenerator = new AccountNumberGenerator();
             this.accountService = accountService;
             this.userService = userService;
             this.transactionService = transactionService;
@@ -31,44 +34,59 @@ namespace FireBank.ViewModels
 
         private void LoadAccounts()
         {
-            accounts = new ObservableCollection<Account>();
+            accounts = (ObservableCollection<Account>)this.accountService.GetAccountsByUserId(this.user.Id);
         }
 
         private void LoadTransactions() {
-            transactions = new ObservableCollection<Transaction>();
-        }
-
-        [RelayCommand]
-        public void CreateAccount()
-        {
-            this.accountService.Insert(new Account
+            foreach (var account in accounts)
             {
-                Id = ObjectId.NewObjectId(),
-                AccountNumber = "1234567890",
-                Balance = 1000,
-                UserId = ObjectId.NewObjectId()
-            }, ObjectId.NewObjectId());
-        }
-
-        [RelayCommand]
-        public bool DeleteAccount() { 
+              foreach (var transaction in this.transactionService.GetTransactionsByAccountId(account.Id))
+              {
+                transactions.Add(transaction);
+              }
+            }
             
         }
 
         [RelayCommand]
-        public void CreateTransaction(string targetAccount, ObjectId srcUserId)
+        public void CreateAccount(ObjectId userId)
         {
-
-            var targetAccount = accountService.GetAccountByAccountNumber(targetAccount);
-
-            transactionService.Insert(new Transaction
+            
+            this.accountService.Insert(new Account
             {
                 Id = ObjectId.NewObjectId(),
-                Amount = 100,
-                Date = DateTime.Now,
-                Note = "",
-                FromAccountId = targetAccount.AccountNumber
+                AccountNumber = accountNumberGenerator.GenerateNational(),
+                Balance = 0,
+                
+                UserId = userId
             });
+        }
+
+        [RelayCommand]
+        public void CreateTransaction(string targetAccountNumber, string srcAccountNumber,
+            decimal amount, string note, Currency currency)
+        {
+
+            var srcAccount = accountService.GetAccountByAccountNumber(srcAccountNumber);
+            var tgtAccount = accountService.GetAccountByAccountNumber(targetAccountNumber);
+            if (srcAccount != null && tgtAccount != null)
+            {
+                if (tgtAccount.Currency != srcAccount.Currency)
+                {
+                    throw new InvalidOperationException("Účty musí mít stejnou měnu");
+                }
+
+                this.transactionService.Insert(new Transaction
+                {
+                    Id = ObjectId.NewObjectId(),
+                    FromAccountId = srcAccount.Id,
+                    ToAccountId = tgtAccount.Id,
+                    Note = note,
+                    Amount = amount,
+                    Currency = currency,
+                });
+            }    
+           
         }
 
     }

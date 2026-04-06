@@ -9,7 +9,6 @@ namespace FireBank.Services
     public interface ITransactionService
     {
         IEnumerable<Transaction> GetTransactionsByAccountId(ObjectId accountId);
-        IEnumerable<Transaction> GetTransactionsByUserId(ObjectId userId);
         void Insert(Transaction transaction);
 
     }

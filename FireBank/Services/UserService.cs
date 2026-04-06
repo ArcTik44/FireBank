@@ -1,12 +1,14 @@
 ﻿using FireBank.Models;
+using Isopoh.Cryptography.Argon2;
 using LiteDB;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace FireBank.Services
 {
-    internal class UserService : IUserService, IDisposable
+    public class UserService : IUserService, IDisposable
     {
         private readonly LiteDatabase _db;
         private readonly ILiteCollection<User> _collection;
@@ -15,11 +17,6 @@ namespace FireBank.Services
         {
             this._db = new LiteDatabase(dbPath);
             this._collection = _db.GetCollection<User>("users");
-        }
-
-        public bool Delete(ObjectId id)
-        {
-            throw new NotImplementedException();
         }
 
         public void Dispose()
@@ -32,24 +29,42 @@ namespace FireBank.Services
             return _collection.FindAll();
         }
 
-        public User? GetByEmail(string email)
+        public User? GetUser(ObjectId userId)
         {
-            return _collection.FindOne(u => u.Email == email);
+            return _collection.Find(user => user.Id == userId).FirstOrDefault();
         }
 
-        public User? GetByUserId(ObjectId id)
+        public void Insert(User user,string password_plain)
         {
-            return _collection.FindOne(u => u.Id == id);
+            user.PasswordHash = Argon2.Hash(password_plain);
+            _collection.Insert(user);
         }
 
-        public void Insert(User user)
+        public bool Login(string email, string password)
         {
-            throw new NotImplementedException();
+            var user = _collection.FindOne(u => u.Email == email);
+            if (user == null || !Argon2.Verify(user.PasswordHash, password))
+            {
+                return false;
+            }
+            return true;
         }
 
-        public bool Update(User user)
+        public bool UpdatePassword(ObjectId userId, string newPassword)
         {
-            throw new NotImplementedException();
+            var user = _collection.FindOne(u => u.Id == userId);
+            if(user == null)
+                return false;
+           _collection.Update(userId, new User
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Username = user.Username,
+                PasswordHash = Argon2.Hash(newPassword)
+            });
+            return true;
         }
     }
 }
