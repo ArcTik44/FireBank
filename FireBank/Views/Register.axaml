@@ -7,43 +7,33 @@
         x:DataType="viewmodels:RegisterViewModel"
         >
 
-    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="8" Width="260" Margin="0,12">
-        <TextBlock Text="Registrace" FontSize="20" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+    <Grid ColumnDefinitions="200,200" HorizontalAlignment="Center" 
+      RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="15">
 
-        <TextBlock Text="Jméno:"/>
-        <TextBox Text="{Binding FirstName}"/>
+    <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Registrace nového uživatele" />
 
-        <TextBlock Text="Příjmení:"/>
-        <TextBox Text="{Binding LastName}"/>
+    <TextBlock Grid.Row="1" Grid.Column="0" Text="Jméno:" />
+    <TextBox   Grid.Row="1" Grid.Column="1" Text="{Binding FirstName}" Width="200" />
 
-        <TextBlock Text="Email:"/>
-        <TextBox Text="{Binding Email}"/>
+    <TextBlock Grid.Row="2" Grid.Column="0" Text="Přijmení:" />
+    <TextBox   Grid.Row="2" Grid.Column="1" Text="{Binding LastName}" Width="200" />
 
-        <TextBlock Text="Heslo:"/>
-        <TextBox Text="{Binding Password}" PasswordChar="*"/>
+    <TextBlock Grid.Row="3" Grid.Column="0" Text="Email:" />
+    <TextBox   Grid.Row="3" Grid.Column="1" Text="{Binding Email}" Width="200" />
 
-        <TextBlock Text="Potvrzení hesla:"/>
-        <TextBox Text="{Binding ConfirmPassword}" PasswordChar="*"/>
+    <TextBlock Grid.Row="4" Grid.Column="0" Text="Heslo:" />
+    <TextBox   Grid.Row="4" Grid.Column="1" Text="{Binding Password}" PasswordChar="*" Name="PasswordBox" Width="200" />
 
-        <CheckBox IsChecked="{Binding AcceptTerms}">
-            Souhlasím se zpracováním osobních údajů pro účely registrace a poskytování služeb FireBank.
-        </CheckBox>
+    <TextBlock Grid.Row="5" Grid.Column="0" Text="Potvrzení hesla:" />
+    <TextBox   Grid.Row="5" Grid.Column="1" Text="{Binding ConfirmPassword}" PasswordChar="*" Name="ConfirmPasswordBox" Width="200" />
 
-        <TextBlock Text="{Binding ErrorMessage}" Foreground="Red"
-                   IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
-                   TextWrapping="Wrap" />
+    <CheckBox  Grid.Row="6" Grid.ColumnSpan="2" x:Name="AcceptTermsCheckBox"
+               Content="Přijímám podmínky užití aplikace FireBank a zpracování osobních údajů"/>
+    <Button    Grid.Row="7" Grid.Column="0"
+               IsEnabled="{Binding #AcceptTermsCheckBox.IsChecked}"
+               Content="Registrovat se" HorizontalContentAlignment="Center" Command="{Binding RegisterCommand}"/>
+    <Button Grid.Row="7" Grid.Column="1"
+            Content="Mám účet - Přihlásit se" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding GoToLoginCommand}"/>
 
-        <Button Content="Zpět na přihlášení"
-                HorizontalAlignment="Center"
-                HorizontalContentAlignment="Stretch"
-                Command="{Binding GoToLoginCommand}"/>
-			
-        <Button Content="Registrovat se"
-                HorizontalContentAlignment="Center"
-                HorizontalAlignment="Stretch"
-                IsEnabled="{Binding AcceptTerms}"
-                Command="{Binding RegisterCommand}"
-                Margin="0,4,0,0"/>
-
-    </StackPanel>
+</Grid>
 </Window>

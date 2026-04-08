@@ -9,7 +9,7 @@ namespace FireBank.ViewModels
 {
     public partial class RegisterViewModel : ViewModelBase
     {
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
         private readonly NavigationService _navigationService;
 
         private bool _acceptTerms;
@@ -65,7 +65,7 @@ namespace FireBank.ViewModels
         public ICommand RegisterCommand { get; }
         public ICommand GoToLoginCommand { get; }
 
-        public RegisterViewModel(UserService userService, NavigationService navigationService)
+        public RegisterViewModel(IUserService userService, NavigationService navigationService)
         {
             _userService = userService;
             _navigationService = navigationService;

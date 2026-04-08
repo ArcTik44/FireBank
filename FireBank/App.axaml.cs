@@ -3,6 +3,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using FireBank.Services;
 using FireBank.ViewModels;
+using FireBank.Views;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
@@ -11,7 +12,6 @@ namespace FireBank
 {
     public partial class App : Application
     {
-
         public static IServiceProvider Services { get; private set; } = null!;
 
         public override void Initialize()
@@ -23,33 +23,36 @@ namespace FireBank
         {
             var services = new ServiceCollection();
             ConfigureServices(services);
+            Services = services.BuildServiceProvider();
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 desktop.MainWindow = new MainWindow();
             }
-            services.AddSingleton<DatabaseService>();
-            services.AddSingleton<UserService>();
+            base.OnFrameworkInitializationCompleted();
+
+        }
+        private static string GetDbPath()
+        {
+            var path = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "MyApp", "data.db");
+            Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+            return path;
         }
         private static void ConfigureServices(IServiceCollection services)
         {
-            // Cesta k databázi v AppData
-            var dbPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "MyApp", "data.db");
+            var dbPath = GetDbPath();
 
-            Directory.CreateDirectory(Path.GetDirectoryName(dbPath)!);
-
-            // Singleton – sdílíme jednu instanci databáze
             services.AddSingleton<IAccountService>(_ => new AccountService(dbPath));
             services.AddSingleton<ITransactionService>(_ => new TransactionService(dbPath));
+            services.AddSingleton<IUserService>(_ => new UserService(dbPath));
+            services.AddSingleton<NavigationService>();
 
-            // ViewModely a okna
             services.AddTransient<DashboardViewModel>();
             services.AddTransient<LoginViewModel>();
             services.AddTransient<RegisterViewModel>();
             services.AddTransient<NewTransactionViewModel>();
             services.AddTransient<NewBankAccountViewModel>();
-            services.AddTransient<MainWindow>();
         }
     }
 }

@@ -8,7 +8,7 @@ namespace FireBank.ViewModels
 {
     public partial class LoginViewModel : ViewModelBase
     {
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
         private readonly NavigationService _navigationService;
 
         private string _email = string.Empty;
@@ -36,7 +36,7 @@ namespace FireBank.ViewModels
         public ICommand LoginCommand { get; }
         public ICommand GoToRegisterCommand { get; }
 
-        public LoginViewModel(UserService userService, NavigationService navigationService)
+        public LoginViewModel(IUserService userService, NavigationService navigationService)
         {
             _userService = userService;
             _navigationService = navigationService;

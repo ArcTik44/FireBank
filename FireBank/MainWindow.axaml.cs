@@ -1,5 +1,8 @@
 using Avalonia.Controls;
+using FireBank.ViewModels;
 using FireBank.Views;
+using Microsoft.Extensions.DependencyInjection;
+
 
 namespace FireBank
 {
@@ -12,13 +15,15 @@ namespace FireBank
 
         private void GoToLogin_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            new Login().Show();
+            var vm = App.Services.GetRequiredService<LoginViewModel>();
+            new Login(){ DataContext = vm}.Show();
             Close();
         }
 
         private void GoToRegister_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            new Register().Show();
+            var vm = App.Services.GetRequiredService<RegisterViewModel>();
+            new Register(){ DataContext = vm}.Show();
             Close();
         }
     }
