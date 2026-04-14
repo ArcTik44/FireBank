@@ -5,26 +5,27 @@
         Title="Registrace"
         Width="800" Height="600"
         x:DataType="viewmodels:RegisterViewModel"
+
         >
 
-    <Grid ColumnDefinitions="200,200" HorizontalAlignment="Center" 
-      RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="15">
+    <Grid ColumnDefinitions="200,180" HorizontalAlignment="Center" VerticalAlignment="Center" 
+      RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="5" ColumnSpacing="5">
 
     <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Registrace nového uživatele" />
 
-    <TextBlock Grid.Row="1" Grid.Column="0" Text="Jméno:" />
-    <TextBox   Grid.Row="1" Grid.Column="1" Text="{Binding FirstName}" Width="200" />
+    <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Text="Jméno:" />
+    <TextBox   Grid.Row="1" Grid.Column="1" Text="{Binding FirstName}" Width="200" /> 
 
-    <TextBlock Grid.Row="2" Grid.Column="0" Text="Přijmení:" />
+    <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Text="Přijmení:" />
     <TextBox   Grid.Row="2" Grid.Column="1" Text="{Binding LastName}" Width="200" />
 
-    <TextBlock Grid.Row="3" Grid.Column="0" Text="Email:" />
+    <TextBlock Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Text="Email:" />
     <TextBox   Grid.Row="3" Grid.Column="1" Text="{Binding Email}" Width="200" />
 
-    <TextBlock Grid.Row="4" Grid.Column="0" Text="Heslo:" />
+    <TextBlock Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Text="Heslo:" />
     <TextBox   Grid.Row="4" Grid.Column="1" Text="{Binding Password}" PasswordChar="*" Name="PasswordBox" Width="200" />
 
-    <TextBlock Grid.Row="5" Grid.Column="0" Text="Potvrzení hesla:" />
+    <TextBlock Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Text="Potvrzení hesla:" />
     <TextBox   Grid.Row="5" Grid.Column="1" Text="{Binding ConfirmPassword}" PasswordChar="*" Name="ConfirmPasswordBox" Width="200" />
 
     <CheckBox  Grid.Row="6" Grid.ColumnSpan="2" x:Name="AcceptTermsCheckBox"

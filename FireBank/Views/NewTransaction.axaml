@@ -1,12 +1,54 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:vm="using:FireBank.ViewModels"
         x:Class="FireBank.NewTransaction"
-        Title="Nová transakce">
-    <StackPanel>
-		<TextBlock>Nová transakce</TextBlock>
+        x:DataType="vm:NewTransactionViewModel"
+        Title="Nová transakce"
+        Width="420" Height="400"
+        CanResize="False">
+
+    <StackPanel Margin="24" Spacing="12">
+
+        <TextBlock Text="Nová transakce" FontSize="18" FontWeight="Bold"
+                   Margin="0,0,0,8"/>
+
+        <TextBlock Text="Z účtu:"/>
+        <ComboBox ItemsSource="{Binding UserAccounts}"
+                  SelectedItem="{Binding SelectedFromAccount}"
+                  HorizontalAlignment="Stretch">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding DisplayName}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <TextBlock Text="{Binding AvailableBalance}" Foreground="Gray" FontSize="12"/>
+
+        <TextBlock Text="Na účet (číslo účtu):"/>
+        <TextBox Text="{Binding ToAccountNumber}"
+                 PlaceholderText="např. 1234567890/0100"
+                 HorizontalAlignment="Stretch"/>
+
+        <TextBlock Text="Částka:"/>
+        <NumericUpDown Value="{Binding Amount}"
+                       Minimum="0"
+                       FormatString="N2"
+                       HorizontalAlignment="Stretch"/>
+
+        <TextBlock Text="Poznámka:"/>
+        <TextBox Text="{Binding Note}"
+                 PlaceholderText="Volitelná poznámka"
+                 HorizontalAlignment="Stretch"/>
+
+        <TextBlock Text="{Binding ErrorMessage}" Foreground="Red"
+                   IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+        <StackPanel Orientation="Horizontal" Spacing="8"
+                    HorizontalAlignment="Right" Margin="0,8,0,0">
+            <Button Content="Zrušit" Command="{Binding CancelCommand}" Width="100"/>
+            <Button Content="Odeslat" Command="{Binding SendCommand}"
+                    Width="100" Classes="accent"/>
+        </StackPanel>
+
     </StackPanel>
-  
 </Window>

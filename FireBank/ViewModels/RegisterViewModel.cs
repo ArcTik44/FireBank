@@ -1,7 +1,6 @@
 ﻿using FireBank.Models;
 using FireBank.Services;
 using FireBank.Views;
-using GalaSoft.MvvmLight;
 using ReactiveUI;
 using System.Windows.Input;
 
@@ -23,43 +22,43 @@ namespace FireBank.ViewModels
         public bool AcceptTerms
         {
             get => _acceptTerms;
-            set => Set(ref _acceptTerms, value);
+            set => SetProperty(ref _acceptTerms, value);
         }
 
         public string FirstName
         {
             get => _firstName;
-            set => Set(ref _firstName, value);
+            set => SetProperty(ref _firstName, value);
         }
 
         public string LastName
         {
             get => _lastName;
-            set => Set(ref _lastName, value);
+            set => SetProperty(ref _lastName, value);
         }
 
         public string Email
         {
             get => _email;
-            set => Set(ref _email, value);
+            set => SetProperty(ref _email, value);
         }
 
         public string Password
         {
             get => _password;
-            set => Set(ref _password, value);
+            set => SetProperty(ref _password, value);
         }
 
         public string ConfirmPassword
         {
             get => _confirmPassword;
-            set => Set(ref _confirmPassword, value);
+            set => SetProperty(ref _confirmPassword, value);
         }
 
         public string ErrorMessage
         {
             get => _errorMessage;
-            set => Set(ref _errorMessage, value);
+            set => SetProperty(ref _errorMessage, value);
         }
 
         public ICommand RegisterCommand { get; }
@@ -78,43 +77,22 @@ namespace FireBank.ViewModels
             ErrorMessage = string.Empty;
 
             if (string.IsNullOrWhiteSpace(FirstName) || string.IsNullOrWhiteSpace(LastName))
-            {
-                ErrorMessage = "Zadejte jméno a příjmení.";
-                return;
-            }
+            { ErrorMessage = "Zadejte jméno a příjmení."; return; }
 
             if (string.IsNullOrWhiteSpace(Email) || !Email.Contains('@'))
-            {
-                ErrorMessage = "Zadejte platný e-mail.";
-                return;
-            }
+            { ErrorMessage = "Zadejte platný e-mail."; return; }
 
             if (string.IsNullOrWhiteSpace(Password) || Password.Length < 6)
-            {
-                ErrorMessage = "Heslo musí mít alespoň 6 znaků.";
-                return;
-            }
+            { ErrorMessage = "Heslo musí mít alespoň 6 znaků."; return; }
 
             if (Password != ConfirmPassword)
-            {
-                ErrorMessage = "Hesla se neshodují.";
-                return;
-            }
+            { ErrorMessage = "Hesla se neshodují."; return; }
 
             if (_userService.EmailExists(Email))
-            {
-                ErrorMessage = "Tento e-mail je již registrován.";
-                return;
-            }
+            { ErrorMessage = "Tento e-mail je již registrován."; return; }
 
-
-            var newUser = new User
-            {
-                FirstName = FirstName,
-                LastName = LastName,
-                Email = Email,
-            };
-            _userService.Insert(newUser,Password);
+            var newUser = new User { FirstName = FirstName, LastName = LastName, Email = Email };
+            _userService.Insert(newUser, Password);
             _navigationService.NavigateTo<Dashboard, DashboardViewModel>();
         }
     }

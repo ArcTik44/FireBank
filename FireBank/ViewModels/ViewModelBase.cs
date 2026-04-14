@@ -2,7 +2,7 @@
 
 namespace FireBank.ViewModels
 {
-    public class NewTransactionViewModel : ViewModelBase
+    public abstract class ViewModelBase : ObservableObject
     {
     }
 }

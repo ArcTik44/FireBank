@@ -1,6 +1,5 @@
 ﻿using FireBank.Services;
 using FireBank.Views;
-using GalaSoft.MvvmLight;
 using ReactiveUI;
 using System.Windows.Input;
 
@@ -18,19 +17,19 @@ namespace FireBank.ViewModels
         public string Email
         {
             get => _email;
-            set => Set(ref _email, value);
+            set => SetProperty(ref _email, value);
         }
 
         public string Password
         {
             get => _password;
-            set => Set(ref _password, value);
+            set => SetProperty(ref _password, value);
         }
 
         public string ErrorMessage
         {
             get => _errorMessage;
-            set => Set(ref _errorMessage, value);
+            set => SetProperty(ref _errorMessage, value);
         }
 
         public ICommand LoginCommand { get; }

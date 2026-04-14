@@ -1,62 +1,70 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+        xmlns:vm="using:FireBank.ViewModels"
         x:Class="FireBank.Dashboard"
         x:DataType="vm:DashboardViewModel"
-        xmlns:vm="using:FireBank.ViewModels"
-        Title="Dashboard">
-    <StackPanel>
-        <TextBlock Text="">
-			
-        </TextBlock>
-        <TabControl HorizontalAlignment="Center">
-            <TabItem Header="Účty">
-                <StackPanel>
-                    <ListBox x:Name="StandardAccountsListBox">
-				        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal" Spacing="8">
-                                    <TextBlock Text="Účet1" FontWeight="Bold"/>
-                                    <TextBlock Text="0,00 CZK"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+        Title="Dashboard"
+        Width="800" Height="600">
 
-                    <ListBox x:Name="SavingsAccountsListBox">
-				        <ListBox.ItemTemplate>
+    <DockPanel>
+
+        <!-- Hlavička -->
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal"
+                    Background="#1a73e8" Height="50" Spacing="12">
+            <TextBlock Text="{Binding WelcomeMessage}"
+                       Foreground="White" FontSize="16"
+                       VerticalAlignment="Center" Margin="16,0,0,0"/>
+            <Button Content="Odhlásit" Command="{Binding LogoutCommand}"
+                    VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <TabControl>
+
+            <!-- Účty -->
+            <TabItem Header="Účty">
+                <DockPanel>
+                    <Button DockPanel.Dock="Top" Content="+ Nový účet"
+                            Command="{Binding NewAccountCommand}"
+                            HorizontalAlignment="Left" Margin="8"/>
+                    <ListBox ItemsSource="{Binding Accounts}"
+                             SelectedItem="{Binding SelectedAccount}">
+                        <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal" Spacing="8">
-                                    <TextBlock Text="Spořící Účet 1" FontWeight="Bold"/>
-                                    <TextBlock Text="0,00 CZK"/>
+                                <StackPanel Orientation="Horizontal" Spacing="16">
+                                    <TextBlock Text="{Binding AccountNumber}" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding AccountType}"/>
+                                    <TextBlock Text="{Binding Balance, StringFormat='{}{0:N2}'}"/>
+                                    <TextBlock Text="{Binding Currency}"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                </StackPanel>
+                </DockPanel>
             </TabItem>
+
+            <!-- Transakce -->
             <TabItem Header="Transakce">
-                <StackPanel>
-                    <Button HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
-                        Nová transakce
-                    </Button>
-					<ListBox x:Name="TransactionsListBox">
-						<ListBox.ItemTemplate>
+                <DockPanel>
+                    <Button DockPanel.Dock="Top" Content="+ Nová transakce"
+                            Command="{Binding NewTransactionCommand}"
+                            HorizontalAlignment="Left" Margin="8"/>
+                    <ListBox ItemsSource="{Binding Transactions}">
+                        <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal" Spacing="8">
-                                    <TextBlock Text="Spořící Účet 1" FontWeight="Bold"/>
-                                    <TextBlock Text="0,00 CZK"/>
+                                <StackPanel Orientation="Horizontal" Spacing="16">
+                                    <TextBlock Text="{Binding Date, StringFormat='{}{0:dd.MM.yyyy}'}"/>
+                                    <TextBlock Text="{Binding FromAccountNumber}"/>
+                                    <TextBlock Text="→"/>
+                                    <TextBlock Text="{Binding ToAccountNumber}"/>
+                                    <TextBlock Text="{Binding Amount, StringFormat='{}{0:N2}'}" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Note}" Foreground="Gray"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                </StackPanel>
+                </DockPanel>
             </TabItem>
-            <TabItem Header="Nastavení"></TabItem>
+
         </TabControl>
-    </StackPanel>
-        
-    
+    </DockPanel>
 </Window>
