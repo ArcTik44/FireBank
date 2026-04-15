@@ -1,18 +1,17 @@
 ﻿using FireBank.Models;
 using LiteDB;
-using System;
 using System.Collections.Generic;
 
 namespace FireBank.Services
 {
-    public class AccountService : IAccountService, IDisposable
+    public class AccountService : IAccountService
     {
         private readonly LiteDatabase _db;
         private readonly ILiteCollection<Account> _collection;
 
-        public AccountService(string dbPath)
+        public AccountService(LiteDatabase db)
         {
-            _db = new LiteDatabase(dbPath);
+            _db = db;
             _collection = _db.GetCollection<Account>("accounts");
             _collection.EnsureIndex(accs => accs.Id);
         }
@@ -20,11 +19,6 @@ namespace FireBank.Services
         public bool Delete(ObjectId accountId)
         {
             return _collection.Delete(accountId);
-        }
-
-        public void Dispose()
-        {
-            _db.Dispose();
         }
 
         public Account ? GetAccountByAccountNumber(string accountNumber)

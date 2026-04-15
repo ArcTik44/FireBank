@@ -1,27 +1,20 @@
 ﻿using FireBank.Models;
 using Isopoh.Cryptography.Argon2;
 using LiteDB;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace FireBank.Services
 {
-    public class UserService : IUserService, IDisposable
+    public class UserService : IUserService
     {
         private readonly LiteDatabase _db;
         private readonly ILiteCollection<User> _collection;
 
-        public UserService(string dbPath)
+        public UserService(LiteDatabase db)
         {
-            this._db = new LiteDatabase(dbPath);
-            this._collection = _db.GetCollection<User>("users");
-        }
-
-        public void Dispose()
-        {
-            this._db.Dispose();
+            _db = db;
+            _collection = _db.GetCollection<User>("users");
         }
 
         public bool EmailExists(string email)

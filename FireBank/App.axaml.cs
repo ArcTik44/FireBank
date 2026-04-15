@@ -3,6 +3,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using FireBank.Services;
 using FireBank.ViewModels;
+using LiteDB;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
@@ -42,9 +43,10 @@ namespace FireBank
         {
             var dbPath = GetDbPath();
 
-            services.AddSingleton<IAccountService>(_ => new AccountService(dbPath));
-            services.AddSingleton<ITransactionService>(_ => new TransactionService(dbPath));
-            services.AddSingleton<IUserService>(_ => new UserService(dbPath));
+            services.AddSingleton<LiteDatabase>(_ => new LiteDatabase(dbPath));
+            services.AddSingleton<IAccountService>(sp => new AccountService(sp.GetRequiredService<LiteDatabase>()));
+            services.AddSingleton<ITransactionService>(sp => new TransactionService(sp.GetRequiredService<LiteDatabase>()));
+            services.AddSingleton<IUserService>(sp => new UserService(sp.GetRequiredService<LiteDatabase>()));
             services.AddSingleton<SessionService>();
 
             services.AddTransient<LoginViewModel>();
