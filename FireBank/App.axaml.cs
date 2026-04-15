@@ -3,7 +3,6 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using FireBank.Services;
 using FireBank.ViewModels;
-using FireBank.Views;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
@@ -48,9 +47,6 @@ namespace FireBank
             services.AddSingleton<IUserService>(_ => new UserService(dbPath));
             services.AddSingleton<SessionService>();
 
-            services.AddTransient<DashboardViewModel>();
-            services.AddTransient<NewBankAccountViewModel>();
-            services.AddTransient<NewTransactionViewModel>();
             services.AddTransient<LoginViewModel>();
             services.AddTransient<RegisterViewModel>();
         }

@@ -1,9 +1,7 @@
 ﻿using FireBank.Models;
 using FireBank.Services;
-using FireBank.Views;
 using ReactiveUI;
 using System;
-using System.Threading.Channels;
 using System.Windows.Input;
 
 namespace FireBank.ViewModels
