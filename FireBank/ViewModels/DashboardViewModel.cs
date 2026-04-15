@@ -1,6 +1,6 @@
 ﻿using FireBank.Models;
 using FireBank.Services;
-using ReactiveUI;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -37,9 +37,9 @@ namespace FireBank.ViewModels
             _transactionService = transactionService;
             _user = user;
 
-            NewAccountCommand = ReactiveCommand.Create(() => GoToNewAccountRequested?.Invoke());
-            NewTransactionCommand = ReactiveCommand.Create(() => GoToNewTransactionRequested?.Invoke());
-            LogoutCommand = ReactiveCommand.Create(() => LogoutRequested?.Invoke());
+            NewAccountCommand = new RelayCommand(() => GoToNewAccountRequested?.Invoke());
+            NewTransactionCommand = new RelayCommand(() => GoToNewTransactionRequested?.Invoke());
+            LogoutCommand = new RelayCommand(() => LogoutRequested?.Invoke());
 
             RefreshAccounts();
         }

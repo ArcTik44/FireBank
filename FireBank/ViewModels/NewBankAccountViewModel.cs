@@ -1,6 +1,6 @@
 ﻿using FireBank.Models;
 using FireBank.Services;
-using ReactiveUI;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -40,8 +40,8 @@ namespace FireBank.ViewModels
             _accountNumberGenerator = new AccountNumberGenerator();
             _user = user;
 
-            CancelCommand = ReactiveCommand.Create(() => CloseRequested?.Invoke());
-            CreateAccountCommand = ReactiveCommand.Create(DoCreateAccount);
+            CancelCommand = new RelayCommand(() => CloseRequested?.Invoke());
+            CreateAccountCommand = new RelayCommand(DoCreateAccount);
 
             foreach (var c in Enum.GetValues<Currency>())
                 Currencies.Add(c);

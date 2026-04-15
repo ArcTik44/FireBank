@@ -1,6 +1,6 @@
 ﻿using FireBank.Models;
 using FireBank.Services;
-using ReactiveUI;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -54,8 +54,8 @@ namespace FireBank.ViewModels
             _accountService = accountService;
             _transactionService = transactionService;
 
-            CancelCommand = ReactiveCommand.Create(() => CloseRequested?.Invoke());
-            SendCommand = ReactiveCommand.Create(DoSendTransaction);
+            CancelCommand = new RelayCommand(() => CloseRequested?.Invoke());
+            SendCommand = new RelayCommand(DoSendTransaction);
 
             foreach (var acc in _accountService.GetAccountsByUserId(_user.Id))
                 UserAccounts.Add(acc);

@@ -1,6 +1,6 @@
 ﻿using FireBank.Models;
 using FireBank.Services;
-using ReactiveUI;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Windows.Input;
 
@@ -33,8 +33,8 @@ namespace FireBank.ViewModels
         public RegisterViewModel(IUserService userService)
         {
             _userService = userService;
-            RegisterCommand = ReactiveCommand.Create(DoRegister);
-            GoToLoginCommand = ReactiveCommand.Create(
+            RegisterCommand = new RelayCommand(DoRegister);
+            GoToLoginCommand = new RelayCommand(
                 () => GoToLoginRequested?.Invoke());
 
             RegisterSuccessful += () => {              
