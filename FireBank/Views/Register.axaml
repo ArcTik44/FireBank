@@ -9,7 +9,7 @@
         >
 
     <Grid ColumnDefinitions="200,180" HorizontalAlignment="Center" VerticalAlignment="Center" 
-      RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="5" ColumnSpacing="5">
+      RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="5" ColumnSpacing="5">
 
     <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Registrace nového uživatele" />
 
@@ -30,10 +30,12 @@
 
     <CheckBox  Grid.Row="6" Grid.ColumnSpan="2" x:Name="AcceptTermsCheckBox"
                Content="Přijímám podmínky užití aplikace FireBank a zpracování osobních údajů"/>
-    <Button    Grid.Row="7" Grid.Column="0"
+    <TextBlock Grid.Row="7" Grid.ColumnSpan="2" Text="{Binding ErrorMessage}" Foreground="Red"
+               TextWrapping="Wrap" IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+    <Button    Grid.Row="8" Grid.Column="0"
                IsEnabled="{Binding #AcceptTermsCheckBox.IsChecked}"
                Content="Registrovat se" HorizontalContentAlignment="Center" Command="{Binding RegisterCommand}"/>
-    <Button Grid.Row="7" Grid.Column="1"
+    <Button Grid.Row="8" Grid.Column="1"
             Content="Mám účet - Přihlásit se" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding GoToLoginCommand}"/>
 
 </Grid>

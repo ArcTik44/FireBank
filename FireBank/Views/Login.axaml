@@ -11,7 +11,9 @@
         <TextBlock Text="Email:"/>
         <TextBox Text="{Binding Email}"/>
         <TextBlock Text="Heslo:"/>
-        <TextBox Name="PasswordTextBox" PasswordChar="*"/>
+        <TextBox Name="PasswordTextBox" PasswordChar="*" Text="{Binding Password}"/>
+        <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" 
+                   TextWrapping="Wrap" IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
         <Button Content="Přihlásit se" HorizontalContentAlignment="Center"
                 HorizontalAlignment="Stretch" Margin="0,8,0,0"
                 Command="{Binding LoginCommand}"/>
