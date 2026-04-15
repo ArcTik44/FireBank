@@ -1,6 +1,6 @@
 ﻿using FireBank.Services;
-using FireBank.Views;
 using ReactiveUI;
+using System;
 using System.Windows.Input;
 
 namespace FireBank.ViewModels
@@ -8,24 +8,24 @@ namespace FireBank.ViewModels
     public partial class LoginViewModel : ViewModelBase
     {
         private readonly IUserService _userService;
-        private readonly NavigationService _navigationService;
 
         private string _email = string.Empty;
         private string _password = string.Empty;
         private string _errorMessage = string.Empty;
+
+        public event Action? LoginSuccessful;
+        public event Action? GoToRegisterRequested;
 
         public string Email
         {
             get => _email;
             set => SetProperty(ref _email, value);
         }
-
         public string Password
         {
             get => _password;
             set => SetProperty(ref _password, value);
         }
-
         public string ErrorMessage
         {
             get => _errorMessage;
@@ -35,32 +35,31 @@ namespace FireBank.ViewModels
         public ICommand LoginCommand { get; }
         public ICommand GoToRegisterCommand { get; }
 
-        public LoginViewModel(IUserService userService, NavigationService navigationService)
+        public LoginViewModel(IUserService userService)
         {
             _userService = userService;
-            _navigationService = navigationService;
             LoginCommand = ReactiveCommand.Create(DoLogin);
-            GoToRegisterCommand = ReactiveCommand.Create(() => _navigationService.NavigateTo<Register, RegisterViewModel>());
+            LoginSuccessful += () => { 
+                
+            };
+            GoToRegisterRequested += () => { 
+            };
+
+            GoToRegisterCommand = ReactiveCommand.Create(
+                () => GoToRegisterRequested?.Invoke());
         }
 
         private void DoLogin()
         {
             ErrorMessage = string.Empty;
-
             if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
-            {
-                ErrorMessage = "Zadejte uživatelské jméno a heslo.";
-                return;
-            }
+            { ErrorMessage = "Zadejte e-mail a heslo."; return; }
 
             var user = _userService.Login(Email, Password);
             if (user is null)
-            {
-                ErrorMessage = "Nesprávné uživatelské jméno nebo heslo.";
-                return;
-            }
+            { ErrorMessage = "Nesprávné přihlašovací údaje."; return; }
 
-            _navigationService.NavigateTo<Dashboard, DashboardViewModel>();
+            LoginSuccessful?.Invoke();
         }
     }
 }

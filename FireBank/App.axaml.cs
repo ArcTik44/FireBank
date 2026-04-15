@@ -48,6 +48,9 @@ namespace FireBank
             services.AddSingleton<IUserService>(_ => new UserService(dbPath));
             services.AddSingleton<SessionService>();
 
+            services.AddTransient<DashboardViewModel>();
+            services.AddTransient<NewBankAccountViewModel>();
+            services.AddTransient<NewTransactionViewModel>();
             services.AddTransient<LoginViewModel>();
             services.AddTransient<RegisterViewModel>();
         }

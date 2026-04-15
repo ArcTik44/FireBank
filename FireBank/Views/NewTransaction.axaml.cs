@@ -7,6 +7,9 @@ namespace FireBank;
 
 public partial class NewTransaction : Window
 {
+
+
+
     public NewTransaction(User user, AccountService accountService, TransactionService transactionService)
     {
         InitializeComponent();

@@ -2,6 +2,8 @@
 using FireBank.Services;
 using FireBank.Views;
 using ReactiveUI;
+using System;
+using System.Threading.Channels;
 using System.Windows.Input;
 
 namespace FireBank.ViewModels
@@ -9,9 +11,7 @@ namespace FireBank.ViewModels
     public partial class RegisterViewModel : ViewModelBase
     {
         private readonly IUserService _userService;
-        private readonly NavigationService _navigationService;
 
-        private bool _acceptTerms;
         private string _firstName = string.Empty;
         private string _lastName = string.Empty;
         private string _email = string.Empty;
@@ -19,57 +19,32 @@ namespace FireBank.ViewModels
         private string _confirmPassword = string.Empty;
         private string _errorMessage = string.Empty;
 
-        public bool AcceptTerms
-        {
-            get => _acceptTerms;
-            set => SetProperty(ref _acceptTerms, value);
-        }
+        // Eventy pro navigaci
+        public event Action? RegisterSuccessful;
+        public event Action? GoToLoginRequested;
 
-        public string FirstName
-        {
-            get => _firstName;
-            set => SetProperty(ref _firstName, value);
-        }
-
-        public string LastName
-        {
-            get => _lastName;
-            set => SetProperty(ref _lastName, value);
-        }
-
-        public string Email
-        {
-            get => _email;
-            set => SetProperty(ref _email, value);
-        }
-
-        public string Password
-        {
-            get => _password;
-            set => SetProperty(ref _password, value);
-        }
-
-        public string ConfirmPassword
-        {
-            get => _confirmPassword;
-            set => SetProperty(ref _confirmPassword, value);
-        }
-
-        public string ErrorMessage
-        {
-            get => _errorMessage;
-            set => SetProperty(ref _errorMessage, value);
-        }
+        public string FirstName { get => _firstName; set => SetProperty(ref _firstName, value); }
+        public string LastName { get => _lastName; set => SetProperty(ref _lastName, value); }
+        public string Email { get => _email; set => SetProperty(ref _email, value); }
+        public string Password { get => _password; set => SetProperty(ref _password, value); }
+        public string ConfirmPassword { get => _confirmPassword; set => SetProperty(ref _confirmPassword, value); }
+        public string ErrorMessage { get => _errorMessage; set => SetProperty(ref _errorMessage, value); }
 
         public ICommand RegisterCommand { get; }
         public ICommand GoToLoginCommand { get; }
 
-        public RegisterViewModel(IUserService userService, NavigationService navigationService)
+        public RegisterViewModel(IUserService userService)
         {
             _userService = userService;
-            _navigationService = navigationService;
             RegisterCommand = ReactiveCommand.Create(DoRegister);
-            GoToLoginCommand = ReactiveCommand.Create(() => _navigationService.NavigateTo<Login, LoginViewModel>());
+            GoToLoginCommand = ReactiveCommand.Create(
+                () => GoToLoginRequested?.Invoke());
+
+            RegisterSuccessful += () => {              
+            };
+            GoToLoginRequested = () => { 
+            
+            };
         }
 
         private void DoRegister()
@@ -91,9 +66,11 @@ namespace FireBank.ViewModels
             if (_userService.EmailExists(Email))
             { ErrorMessage = "Tento e-mail je již registrován."; return; }
 
-            var newUser = new User { FirstName = FirstName, LastName = LastName, Email = Email };
+            var newUser = new User
+            { FirstName = FirstName, LastName = LastName, Email = Email };
             _userService.Insert(newUser, Password);
-            _navigationService.NavigateTo<Dashboard, DashboardViewModel>();
+
+            RegisterSuccessful?.Invoke();
         }
     }
 }

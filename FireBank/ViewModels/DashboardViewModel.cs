@@ -1,6 +1,10 @@
-﻿using FireBank.Models;
+﻿// DashboardViewModel.cs
+using FireBank.Models;
 using FireBank.Services;
 using ReactiveUI;
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 
 namespace FireBank.ViewModels
@@ -8,27 +12,56 @@ namespace FireBank.ViewModels
     public partial class DashboardViewModel : ViewModelBase
     {
         private readonly AccountService _accountService;
-        private readonly UserService _userService;
         private readonly TransactionService _transactionService;
-        private readonly NavigationService _navigationService;
-        private readonly AccountNumberGenerator _accountNumberGenerator;
+        private readonly User _user;
+        
 
-        public ICommand CreateAccountCommand { get; }
-        public ICommand CreateTransaction { get; }
+        // Eventy pro navigaci – odebírá Dashboard.axaml.cs
+        public event Action? GoToNewTransactionRequested;
+        public event Action? GoToNewAccountRequested;
+        public event Action? LogoutRequested;
 
-        public DashboardViewModel(AccountService accountService, UserService userService,
-            TransactionService transactionService, NavigationService navigationService)
+        public ICommand LogoutCommand { get; }
+        public ICommand NewTransactionCommand { get; }
+        public ICommand NewAccountCommand { get; }
+
+        public string WelcomeMessage => $"Vítejte, {_user.FullName}";
+        public string SelectedAccount => Accounts.FirstOrDefault()?.AccountNumber ?? "Žádný účet";
+
+        public ObservableCollection<Account> Accounts { get; } = [];
+        public ObservableCollection<Transaction> Transactions { get; } = [];
+
+        public DashboardViewModel(
+            AccountService accountService,
+            TransactionService transactionService,
+            User user)
         {
-            _accountNumberGenerator = new AccountNumberGenerator();
             _accountService = accountService;
-            _navigationService = navigationService;
-            _userService = userService;
             _transactionService = transactionService;
+            _user = user;
 
-            CreateAccountCommand = ReactiveCommand.Create(() =>
-                _navigationService.NavigateTo<NewBankAccount, NewBankAccountViewModel>());
-            CreateTransaction = ReactiveCommand.Create(() =>
-                _navigationService.NavigateTo<NewTransaction, NewTransactionViewModel>());
+            RefreshAccounts();
+            GoToNewAccountRequested += () => { };
+            GoToNewTransactionRequested += () => { };
+            LogoutRequested += () => { };
+
+        }
+
+        public void RefreshAccounts()
+        {
+            Accounts.Clear();
+            foreach (var acc in _accountService.GetAccountsByUserId(_user.Id))
+                Accounts.Add(acc);
+
+            Transactions.Clear();
+            foreach (var acc in Accounts)
+            {
+                foreach (var tr in _transactionService.GetTransactionsByAccountId(acc.Id))
+                {
+                    tr.FromAccountNumber = acc.AccountNumber;
+                    Transactions.Add(tr);
+                }
+            }
         }
     }
 }
