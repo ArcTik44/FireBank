@@ -19,7 +19,6 @@ namespace FireBank.ViewModels
         private string _confirmPassword = string.Empty;
         private string _errorMessage = string.Empty;
 
-        // Eventy pro navigaci
         public event Action? RegisterSuccessful;
         public event Action? GoToLoginRequested;
 
@@ -42,7 +41,7 @@ namespace FireBank.ViewModels
 
             RegisterSuccessful += () => {              
             };
-            GoToLoginRequested = () => { 
+            GoToLoginRequested += () => { 
             
             };
         }

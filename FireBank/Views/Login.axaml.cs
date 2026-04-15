@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Threading;
 using FireBank.Services;
 using FireBank.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,17 +16,19 @@ public partial class Login : Window
         DataContext = vm;
 
         vm.LoginSuccessful += () =>
-        {
-            var session = App.Services.GetRequiredService<SessionService>();
-            var dashboard = new Dashboard(session.CurrentUser!);
-            dashboard.Show();
-            Close();
-        };
+            Dispatcher.UIThread.Post(() =>
+            {
+                var session = App.Services.GetRequiredService<SessionService>();
+                var dashboard = new Dashboard(session.CurrentUser!);
+                dashboard.Show();
+                Close();
+            });
 
         vm.GoToRegisterRequested += () =>
-        {
-            new Register().Show();
-            Close();
-        };
+            Dispatcher.UIThread.Post(() =>
+            {
+                new Register().Show();
+                Close();
+            });
     }
 }

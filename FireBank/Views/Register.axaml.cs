@@ -1,6 +1,6 @@
 using Avalonia.Controls;
+using Avalonia.Threading;
 using FireBank.ViewModels;
-using FireBank.Views;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FireBank.Views;
@@ -15,15 +15,17 @@ public partial class Register : Window
         DataContext = vm;
 
         vm.RegisterSuccessful += () =>
-        {
-            new Login().Show();
-            Close();
-        };
+            Dispatcher.UIThread.Post(() =>
+            {
+                new Login().Show();
+                Close();
+            });
 
         vm.GoToLoginRequested += () =>
-        {
-            new Login().Show();
-            Close();
-        };
+            Dispatcher.UIThread.Post(() =>
+            {
+                new Login().Show();
+                Close();
+            });
     }
 }

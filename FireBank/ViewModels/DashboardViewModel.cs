@@ -1,5 +1,4 @@
-﻿// DashboardViewModel.cs
-using FireBank.Models;
+﻿using FireBank.Models;
 using FireBank.Services;
 using ReactiveUI;
 using System;
@@ -14,9 +13,7 @@ namespace FireBank.ViewModels
         private readonly AccountService _accountService;
         private readonly TransactionService _transactionService;
         private readonly User _user;
-        
 
-        // Eventy pro navigaci – odebírá Dashboard.axaml.cs
         public event Action? GoToNewTransactionRequested;
         public event Action? GoToNewAccountRequested;
         public event Action? LogoutRequested;
@@ -40,11 +37,11 @@ namespace FireBank.ViewModels
             _transactionService = transactionService;
             _user = user;
 
-            RefreshAccounts();
-            GoToNewAccountRequested += () => { };
-            GoToNewTransactionRequested += () => { };
-            LogoutRequested += () => { };
+            NewAccountCommand = ReactiveCommand.Create(() => GoToNewAccountRequested?.Invoke());
+            NewTransactionCommand = ReactiveCommand.Create(() => GoToNewTransactionRequested?.Invoke());
+            LogoutCommand = ReactiveCommand.Create(() => LogoutRequested?.Invoke());
 
+            RefreshAccounts();
         }
 
         public void RefreshAccounts()

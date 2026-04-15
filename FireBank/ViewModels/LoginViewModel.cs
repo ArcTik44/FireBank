@@ -8,6 +8,8 @@ namespace FireBank.ViewModels
     public partial class LoginViewModel : ViewModelBase
     {
         private readonly IUserService _userService;
+        private readonly SessionService _sessionService;
+
 
         private string _email = string.Empty;
         private string _password = string.Empty;
@@ -35,9 +37,10 @@ namespace FireBank.ViewModels
         public ICommand LoginCommand { get; }
         public ICommand GoToRegisterCommand { get; }
 
-        public LoginViewModel(IUserService userService)
+        public LoginViewModel(IUserService userService, SessionService sessionService)
         {
             _userService = userService;
+            _sessionService = sessionService;
             LoginCommand = ReactiveCommand.Create(DoLogin);
             LoginSuccessful += () => { 
                 
@@ -56,9 +59,9 @@ namespace FireBank.ViewModels
             { ErrorMessage = "Zadejte e-mail a heslo."; return; }
 
             var user = _userService.Login(Email, Password);
-            if (user is null)
-            { ErrorMessage = "Nesprávné přihlašovací údaje."; return; }
+            if (user is null) { ErrorMessage = "Nesprávné přihlašovací údaje."; return; }
 
+            _sessionService.CurrentUser = user;
             LoginSuccessful?.Invoke();
         }
     }

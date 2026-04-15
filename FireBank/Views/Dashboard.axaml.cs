@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Threading;
 using FireBank.Models;
 using FireBank.Services;
 using FireBank.ViewModels;
@@ -20,22 +21,25 @@ public partial class Dashboard : Window
         DataContext = vm;
 
         vm.GoToNewTransactionRequested += () =>
-        {
-            var window = new NewTransaction(user, accountService, transactionService);
-            window.ShowDialog(this); // dialog nad dashboardem, nezavírá ho
-        };
+            Dispatcher.UIThread.Post(() =>
+            {
+                var window = new NewTransaction(user, accountService, transactionService);
+                window.ShowDialog(this);
+            });
 
         vm.GoToNewAccountRequested += () =>
-        {
-            var window = new NewBankAccount(user, accountService);
-            window.Closed += (_, _) => vm.RefreshAccounts(); // po zavření obnov účty
-            window.ShowDialog(this);
-        };
+            Dispatcher.UIThread.Post(() =>
+            {
+                var window = new NewBankAccount(user, accountService);
+                window.Closed += (_, _) => vm.RefreshAccounts();
+                window.ShowDialog(this);
+            });
 
         vm.LogoutRequested += () =>
-        {
-            new Login().Show();
-            Close();
-        };
+            Dispatcher.UIThread.Post(() =>
+            {
+                new Login().Show();
+                Close();
+            });
     }
 }
