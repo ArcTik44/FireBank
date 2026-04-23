@@ -11,23 +11,15 @@ namespace FireBank.Services
     public class AccountNumberGenerator
     {
         private readonly HashSet<string> _generatedNumbers = [];
-        private static readonly string[] BankCodes =
-        [
-        "0100", "0300", "0600", "0710", "0800", "2010", "2020", "2060",
-        "2070", "2100", "2200", "2250", "2600", "2700", "3030", "3500",
-        "4000", "4300", "5500", "5800", "6000", "6100", "6200", "6210",
-        "6300", "6700", "6800", "7910", "7940", "7960", "7970", "7980",
-        "7990", "8030", "8040", "8060", "8090", "8150", "8200", "8215",
-        "8220", "8225", "8230", "8240", "8250", "8255", "8260", "8265",
-        "8270", "8280", "8283", "8291", "8292", "8293", "8294", "8296"
-    ];
+        private static readonly string BankCode = "6769"; // 
+        
 
         // ── Národní formát ──────────────────────────────────────────────
 
         /// <summary>Vygeneruje číslo účtu v národním formátu: [předčíslí-]čísloúčtu/kód.</summary>
         public string GenerateNational(bool includePrefix = false)
         {
-            string bankCode = GetRandomBankCode();
+            string bankCode = BankCode;
             string prefix = includePrefix ? GeneratePrefix() : string.Empty;
             string accountNum = GenerateAccountNumber();
 
@@ -41,7 +33,7 @@ namespace FireBank.Services
         /// <summary>Vygeneruje platný český IBAN (CZ).</summary>
         public string GenerateIBAN()
         {
-            string bankCode = GetRandomBankCode();
+            string bankCode = BankCode;
             string prefix = GeneratePrefix().PadLeft(6, '0');
             string accountNum = GenerateAccountNumber().PadLeft(10, '0');
 
@@ -106,9 +98,6 @@ namespace FireBank.Services
 
         private static string GeneratePrefix() => GetRandomNumber(1, 999999).ToString();
         private static string GenerateAccountNumber() => GetRandomNumber(1000000, 9999999999).ToString();
-
-        private static string GetRandomBankCode() =>
-            BankCodes[RandomNumberGenerator.GetInt32(BankCodes.Length)];
 
         private static long GetRandomNumber(long min, long max)
         {

@@ -42,6 +42,20 @@ namespace FireBank.ViewModels
             LogoutCommand = new RelayCommand(() => LogoutRequested?.Invoke());
 
             RefreshAccounts();
+            RefreshTransactions();
+        }
+
+        public void RefreshTransactions()
+        {
+            Transactions.Clear();
+            foreach (var acc in Accounts)
+            {
+                foreach (var tr in _transactionService.GetTransactionsByAccountId(acc.Id))
+                {
+                    tr.FromAccountNumber = acc.AccountNumber;
+                    Transactions.Add(tr);
+                }
+            }
         }
 
         public void RefreshAccounts()

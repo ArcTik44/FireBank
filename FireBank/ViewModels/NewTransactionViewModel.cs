@@ -18,7 +18,7 @@ namespace FireBank.ViewModels
 
         private string _note = string.Empty;
         private string _toAccountNumber = string.Empty;
-        private string _amount = string.Empty;
+        private decimal _amount = Decimal.Zero;
         private string _errorMessage = string.Empty;
         private Account? _selectedFromAccount;
 
@@ -39,7 +39,7 @@ namespace FireBank.ViewModels
 
         public string Note { get => _note; set => SetProperty(ref _note, value); }
         public string ToAccountNumber { get => _toAccountNumber; set => SetProperty(ref _toAccountNumber, value); }
-        public string Amount { get => _amount; set => SetProperty(ref _amount, value); }
+        public decimal Amount { get => _amount; set => SetProperty(ref _amount, value); }
         public string ErrorMessage { get => _errorMessage; set => SetProperty(ref _errorMessage, value); }
 
         public string AvailableBalance => SelectedFromAccount is not null
@@ -88,14 +88,14 @@ namespace FireBank.ViewModels
             }
 
             // Validace: částka
-            if (!decimal.TryParse(Amount, out var parsedAmount) || parsedAmount <= 0)
+            if (Amount <= 0)
             {
                 ErrorMessage = "Zadejte platnou kladnou částku.";
                 return;
             }
 
             // Validace: dostatek prostředků
-            if (parsedAmount > SelectedFromAccount.Balance)
+            if (Amount > SelectedFromAccount.Balance)
             {
                 ErrorMessage = "Nedostatek prostředků na účtu.";
                 return;
@@ -117,20 +117,20 @@ namespace FireBank.ViewModels
             }
 
             // Provedení transakce: odečtení + připsání
-            if (!_accountService.WithdrawBalance(SelectedFromAccount.Id, parsedAmount))
+            if (!_accountService.WithdrawBalance(SelectedFromAccount.Id, Amount))
             {
                 ErrorMessage = "Odeslání se nezdařilo.";
                 return;
             }
 
-            _accountService.DepositBalance(toAccount.Id, parsedAmount);
+            _accountService.DepositBalance(toAccount.Id, Amount);
 
             // Záznam transakce
             var transaction = new Transaction
             {
                 FromAccountId = SelectedFromAccount.Id,
                 ToAccountId = toAccount.Id,
-                Amount = parsedAmount,
+                Amount = Amount,
                 Currency = SelectedFromAccount.Currency,
                 Note = Note,
                 Date = DateTime.Now

@@ -35,7 +35,7 @@ namespace FireBank
         {
             var path = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "MyApp", "data.db");
+                "Firebank", "Firebank.db");
             Directory.CreateDirectory(Path.GetDirectoryName(path)!);
             return path;
         }

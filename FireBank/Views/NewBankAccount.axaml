@@ -4,7 +4,7 @@
         x:Class="FireBank.NewBankAccount"
         x:DataType="vm:NewBankAccountViewModel"
         Title="Nový bankovní účet"
-        Width="400" Height="320"
+        Width="600" Height="420"
         CanResize="False">
 
     <StackPanel Margin="24" Spacing="12">
