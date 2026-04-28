@@ -3,68 +3,215 @@
         xmlns:vm="using:FireBank.ViewModels"
         x:Class="FireBank.Dashboard"
         x:DataType="vm:DashboardViewModel"
-        Title="Dashboard"
-        Width="800" Height="600">
+        Title="FireBank – Dashboard"
+        Width="1000" Height="660"
+        Background="#0F1117">
 
-    <DockPanel>
+  <Grid ColumnDefinitions="232,*">
 
-        <!-- Hlavička -->
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal"
-                    Background="#1a73e8" Height="50" Spacing="12">
-            <TextBlock Text="{Binding WelcomeMessage}"
-                       Foreground="White" FontSize="16"
-                       VerticalAlignment="Center" Margin="16,0,0,0"/>
-            <Button Content="Odhlásit" Command="{Binding LogoutCommand}"
-                    VerticalAlignment="Center"/>
+    <!-- ════════════════════════════
+         Postranní panel (sidebar)
+         ════════════════════════════ -->
+    <Border Grid.Column="0" Background="#0A0E1A"
+            BorderBrush="#1E2840" BorderThickness="0,0,1,0">
+      <DockPanel>
+
+        <!-- Logo -->
+        <StackPanel DockPanel.Dock="Top"
+                    Orientation="Horizontal" Spacing="12"
+                    Margin="24,28,24,36">
+          <Border Background="#4B9EFF" CornerRadius="12"
+                  Width="40" Height="40" VerticalAlignment="Center">
+            <TextBlock Text="F" FontSize="20" FontWeight="Bold"
+                       Foreground="White"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+          </Border>
+          <TextBlock Text="FireBank" FontSize="20" FontWeight="Bold"
+                     Foreground="White" VerticalAlignment="Center"/>
         </StackPanel>
 
-        <TabControl>
+        <!-- Odhlásit dole -->
+        <Border DockPanel.Dock="Bottom" Padding="16,16,16,24"
+                BorderBrush="#1E2840" BorderThickness="0,1,0,0">
+          <StackPanel>
+            <TextBlock Text="{Binding WelcomeMessage}"
+                       Classes="subtitle" FontSize="12"
+                       TextWrapping="Wrap" Margin="4,0,0,10"/>
+            <Button Content="⏻  Odhlásit se" Classes="danger"
+                    Command="{Binding LogoutCommand}"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    Height="40"/>
+          </StackPanel>
+        </Border>
 
-            <!-- Účty -->
-            <TabItem Header="Účty">
-                <DockPanel>
-                    <Button DockPanel.Dock="Top" Content="+ Nový účet"
-                            Command="{Binding NewAccountCommand}"
-                            HorizontalAlignment="Left" Margin="8"/>
-                    <ListBox ItemsSource="{Binding Accounts}"
-                             SelectedItem="{Binding SelectedAccount}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal" Spacing="16">
-                                    <TextBlock Text="{Binding AccountNumber}" FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding AccountType}"/>
-                                    <TextBlock Text="{Binding Balance, StringFormat='{}{0:N2}'}"/>
-                                    <TextBlock Text="{Binding Currency}"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </DockPanel>
-            </TabItem>
+        <!-- Navigace -->
+        <StackPanel Margin="16,0" Spacing="4">
+          <TextBlock Text="NAVIGACE" Classes="section-header"
+                     Margin="8,0,0,12"/>
+          <Button Content="🏦  Účty" Classes="nav-active"
+                  Command="{Binding NewAccountCommand}"/>
+          <Button Content="↕  Transakce" Classes="nav"
+                  Command="{Binding NewTransactionCommand}"/>
+        </StackPanel>
 
-            <!-- Transakce -->
-            <TabItem Header="Transakce">
-                <DockPanel>
-                    <Button DockPanel.Dock="Top" Content="+ Nová transakce"
-                            Command="{Binding NewTransactionCommand}"
-                            HorizontalAlignment="Left" Margin="8"/>
-                    <ListBox ItemsSource="{Binding Transactions}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal" Spacing="16">
-                                    <TextBlock Text="{Binding Date, StringFormat='{}{0:dd.MM.yyyy}'}"/>
-                                    <TextBlock Text="{Binding FromAccountNumber}"/>
-                                    <TextBlock Text="→"/>
-                                    <TextBlock Text="{Binding ToAccountNumber}"/>
-                                    <TextBlock Text="{Binding Amount, StringFormat='{}{0:N2}'}" FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding Note}" Foreground="Gray"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </DockPanel>
-            </TabItem>
+      </DockPanel>
+    </Border>
 
-        </TabControl>
-    </DockPanel>
+    <!-- ════════════════════════════
+         Hlavní obsah
+         ════════════════════════════ -->
+    <TabControl Grid.Column="1" Padding="0">
+
+      <!-- ── TAB: Účty ── -->
+      <TabItem Header="Účty">
+        <DockPanel Margin="32,28">
+
+          <!-- Záhlaví sekce -->
+          <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto"
+                Margin="0,0,0,24">
+            <StackPanel Grid.Column="0">
+              <TextBlock Text="Moje účty" Classes="title" FontSize="22"/>
+              <TextBlock Text="Přehled všech vašich bankovních účtů"
+                         Classes="subtitle" Margin="0,4,0,0"/>
+            </StackPanel>
+            <Button Grid.Column="1" Content="+ Nový účet"
+                    Classes="accent"
+                    Command="{Binding NewAccountCommand}"
+                    VerticalAlignment="Center"
+                    Padding="20,10"/>
+          </Grid>
+
+          <!-- Seznam účtů -->
+          <ScrollViewer>
+            <ListBox ItemsSource="{Binding Accounts}">
+              <ListBox.ItemTemplate>
+                <DataTemplate>
+                  <Grid ColumnDefinitions="Auto,*,Auto">
+
+                    <!-- Ikona účtu -->
+                    <Border Grid.Column="0"
+                            Background="#1A2744" CornerRadius="12"
+                            Width="48" Height="48"
+                            Margin="0,0,16,0">
+                      <TextBlock Text="🏦"
+                                 HorizontalAlignment="Center"
+                                 VerticalAlignment="Center"
+                                 FontSize="20"/>
+                    </Border>
+
+                    <!-- Informace -->
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                      <TextBlock Text="{Binding AccountType}"
+                                 FontWeight="SemiBold"
+                                 Foreground="#E2E8F0" FontSize="15"/>
+                      <TextBlock Text="{Binding AccountNumber}"
+                                 Classes="muted" Margin="0,3,0,0"/>
+                    </StackPanel>
+
+                    <!-- Zůstatek -->
+                    <StackPanel Grid.Column="2" VerticalAlignment="Center"
+                                HorizontalAlignment="Right">
+                      <TextBlock Classes="amount-positive"
+                                 HorizontalAlignment="Right">
+                        <Run Text="{Binding Balance, StringFormat='{}{0:N2}'}"/>
+                        <Run Text=" "/>
+                        <Run Text="{Binding Currency}"/>
+                      </TextBlock>
+                      <TextBlock Text="Dostupný zůstatek" Classes="muted"
+                                 HorizontalAlignment="Right" Margin="0,3,0,0"/>
+                    </StackPanel>
+
+                  </Grid>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>
+          </ScrollViewer>
+
+        </DockPanel>
+      </TabItem>
+
+      <!-- ── TAB: Transakce ── -->
+      <TabItem Header="Transakce">
+        <DockPanel Margin="32,28">
+
+          <!-- Záhlaví sekce -->
+          <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto"
+                Margin="0,0,0,24">
+            <StackPanel Grid.Column="0">
+              <TextBlock Text="Historie transakcí" Classes="title" FontSize="22"/>
+              <TextBlock Text="Všechny odchozí a příchozí platby"
+                         Classes="subtitle" Margin="0,4,0,0"/>
+            </StackPanel>
+            <Button Grid.Column="1" Content="+ Nová transakce"
+                    Classes="accent"
+                    Command="{Binding NewTransactionCommand}"
+                    VerticalAlignment="Center"
+                    Padding="20,10"/>
+          </Grid>
+
+          <!-- Seznam transakcí -->
+          <ScrollViewer>
+            <ListBox ItemsSource="{Binding Transactions}">
+              <ListBox.ItemTemplate>
+                <DataTemplate>
+                  <Grid ColumnDefinitions="Auto,*,Auto">
+
+                    <!-- Ikona transakce -->
+                    <Border Grid.Column="0"
+                            Background="#1A2030" CornerRadius="12"
+                            Width="48" Height="48"
+                            Margin="0,0,16,0">
+                      <TextBlock Text="↗"
+                                 HorizontalAlignment="Center"
+                                 VerticalAlignment="Center"
+                                 FontSize="20" Foreground="#4B9EFF"/>
+                    </Border>
+
+                    <!-- Informace -->
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                      <StackPanel Orientation="Horizontal" Spacing="6">
+                        <TextBlock Text="{Binding FromAccountNumber}"
+                                   FontWeight="SemiBold"
+                                   Foreground="#E2E8F0" FontSize="14"/>
+                        <TextBlock Text="→" Foreground="#4B9EFF" FontSize="14"/>
+                        <TextBlock Text="{Binding ToAccountNumber}"
+                                   FontWeight="SemiBold"
+                                   Foreground="#E2E8F0" FontSize="14"/>
+                      </StackPanel>
+                      <StackPanel Orientation="Horizontal" Spacing="10"
+                                  Margin="0,4,0,0">
+                        <TextBlock Text="{Binding Date, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
+                                   Classes="muted"/>
+                        <TextBlock Text="·" Classes="muted"/>
+                        <TextBlock Text="{Binding Note}" Classes="muted"
+                                   IsVisible="{Binding Note, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                      </StackPanel>
+                    </StackPanel>
+
+                    <!-- Částka -->
+                    <StackPanel Grid.Column="2" VerticalAlignment="Center"
+                                HorizontalAlignment="Right">
+                      <TextBlock Classes="amount"
+                                 HorizontalAlignment="Right">
+                        <Run Text="- "/>
+                        <Run Text="{Binding Amount, StringFormat='{}{0:N2}'}"/>
+                        <Run Text=" "/>
+                        <Run Text="{Binding Currency}"/>
+                      </TextBlock>
+                    </StackPanel>
+
+                  </Grid>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>
+          </ScrollViewer>
+
+        </DockPanel>
+      </TabItem>
+
+    </TabControl>
+
+  </Grid>
 </Window>

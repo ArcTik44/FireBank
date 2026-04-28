@@ -1,10 +1,276 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-  <Design.PreviewWith>
-    <Border Padding="20">
-      <!-- Add Controls for Previewer Here -->
-    </Border>
-  </Design.PreviewWith>
 
-  <!-- Add Styles Here -->
+  <!-- ══════════════════════════════════════════════
+       FireBank Design System – Dark Banking Theme
+       ══════════════════════════════════════════════ -->
+
+  <!-- Window base -->
+  <Style Selector="Window">
+    <Setter Property="Background" Value="#0F1117"/>
+    <Setter Property="FontFamily" Value="Segoe UI, Inter, Arial, sans-serif"/>
+    <Setter Property="Foreground" Value="#E2E8F0"/>
+  </Style>
+
+  <!-- ── Typografie ── -->
+  <Style Selector="TextBlock">
+    <Setter Property="Foreground" Value="#E2E8F0"/>
+    <Setter Property="FontSize" Value="14"/>
+  </Style>
+
+  <Style Selector="TextBlock.title">
+    <Setter Property="FontSize" Value="26"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+    <Setter Property="Foreground" Value="#FFFFFF"/>
+  </Style>
+
+  <Style Selector="TextBlock.subtitle">
+    <Setter Property="FontSize" Value="13"/>
+    <Setter Property="Foreground" Value="#94A3B8"/>
+  </Style>
+
+  <Style Selector="TextBlock.label">
+    <Setter Property="FontSize" Value="12"/>
+    <Setter Property="FontWeight" Value="SemiBold"/>
+    <Setter Property="Foreground" Value="#94A3B8"/>
+    <Setter Property="Margin" Value="0,0,0,4"/>
+  </Style>
+
+  <Style Selector="TextBlock.amount-positive">
+    <Setter Property="Foreground" Value="#34D399"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+    <Setter Property="FontSize" Value="15"/>
+  </Style>
+
+  <Style Selector="TextBlock.amount">
+    <Setter Property="Foreground" Value="#F8FAFC"/>
+    <Setter Property="FontWeight" Value="SemiBold"/>
+    <Setter Property="FontSize" Value="15"/>
+  </Style>
+
+  <Style Selector="TextBlock.muted">
+    <Setter Property="Foreground" Value="#64748B"/>
+    <Setter Property="FontSize" Value="12"/>
+  </Style>
+
+  <Style Selector="TextBlock.error">
+    <Setter Property="Foreground" Value="#F87171"/>
+    <Setter Property="FontSize" Value="13"/>
+    <Setter Property="Margin" Value="0,4,0,0"/>
+  </Style>
+
+  <Style Selector="TextBlock.section-header">
+    <Setter Property="FontSize" Value="11"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+    <Setter Property="Foreground" Value="#4B9EFF"/>
+    <Setter Property="Margin" Value="0,0,0,8"/>
+  </Style>
+
+  <!-- ── TextBox ── -->
+  <Style Selector="TextBox">
+    <Setter Property="Background" Value="#1E2333"/>
+    <Setter Property="Foreground" Value="#E2E8F0"/>
+    <Setter Property="BorderBrush" Value="#2D3748"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="CornerRadius" Value="8"/>
+    <Setter Property="Padding" Value="12,10"/>
+    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="MinHeight" Value="42"/>
+  </Style>
+
+  <Style Selector="TextBox:focus">
+    <Setter Property="BorderBrush" Value="#4B9EFF"/>
+    <Setter Property="Background" Value="#1A2744"/>
+  </Style>
+
+  <Style Selector="TextBox:pointerover">
+    <Setter Property="BorderBrush" Value="#3B5278"/>
+  </Style>
+
+  <!-- ── ComboBox ── -->
+  <Style Selector="ComboBox">
+    <Setter Property="Background" Value="#1E2333"/>
+    <Setter Property="Foreground" Value="#E2E8F0"/>
+    <Setter Property="BorderBrush" Value="#2D3748"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="CornerRadius" Value="8"/>
+    <Setter Property="Padding" Value="12,10"/>
+    <Setter Property="MinHeight" Value="42"/>
+  </Style>
+
+  <Style Selector="ComboBox:focus">
+    <Setter Property="BorderBrush" Value="#4B9EFF"/>
+  </Style>
+
+  <!-- ── NumericUpDown ── -->
+  <Style Selector="NumericUpDown">
+    <Setter Property="Background" Value="#1E2333"/>
+    <Setter Property="Foreground" Value="#E2E8F0"/>
+    <Setter Property="BorderBrush" Value="#2D3748"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="CornerRadius" Value="8"/>
+    <Setter Property="MinHeight" Value="42"/>
+  </Style>
+
+  <!-- ── Button – výchozí (sekundární) ── -->
+  <Style Selector="Button">
+    <Setter Property="Background" Value="#1E2333"/>
+    <Setter Property="Foreground" Value="#CBD5E1"/>
+    <Setter Property="BorderBrush" Value="#2D3748"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="CornerRadius" Value="8"/>
+    <Setter Property="Padding" Value="16,10"/>
+    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="MinHeight" Value="40"/>
+    <Setter Property="Cursor" Value="Hand"/>
+  </Style>
+
+  <Style Selector="Button:pointerover /template/ ContentPresenter">
+    <Setter Property="Background" Value="#273044"/>
+  </Style>
+
+  <Style Selector="Button:pressed /template/ ContentPresenter">
+    <Setter Property="Background" Value="#1A2233"/>
+  </Style>
+
+  <!-- ── Button.accent (primární akce) ── -->
+  <Style Selector="Button.accent">
+    <Setter Property="Background" Value="#4B9EFF"/>
+    <Setter Property="Foreground" Value="#FFFFFF"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="FontWeight" Value="SemiBold"/>
+  </Style>
+
+  <Style Selector="Button.accent:pointerover /template/ ContentPresenter">
+    <Setter Property="Background" Value="#3B8EEF"/>
+  </Style>
+
+  <Style Selector="Button.accent:pressed /template/ ContentPresenter">
+    <Setter Property="Background" Value="#2B7EDF"/>
+  </Style>
+
+  <!-- ── Button.danger ── -->
+  <Style Selector="Button.danger">
+    <Setter Property="Background" Value="#2D1B1B"/>
+    <Setter Property="Foreground" Value="#F87171"/>
+    <Setter Property="BorderBrush" Value="#4B2020"/>
+    <Setter Property="BorderThickness" Value="1"/>
+  </Style>
+
+  <Style Selector="Button.danger:pointerover /template/ ContentPresenter">
+    <Setter Property="Background" Value="#3D2020"/>
+  </Style>
+
+  <!-- ── Button.ghost (logout apod.) ── -->
+  <Style Selector="Button.ghost">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Foreground" Value="#94A3B8"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Padding" Value="12,8"/>
+  </Style>
+
+  <Style Selector="Button.ghost:pointerover /template/ ContentPresenter">
+    <Setter Property="Background" Value="#1A2030"/>
+  </Style>
+
+  <!-- ── Button.nav (navigace v postranním panelu) ── -->
+  <Style Selector="Button.nav">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Foreground" Value="#94A3B8"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+    <Setter Property="Padding" Value="16,12"/>
+    <Setter Property="CornerRadius" Value="10"/>
+    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="Width" Value="200"/>
+  </Style>
+
+  <Style Selector="Button.nav:pointerover /template/ ContentPresenter">
+    <Setter Property="Background" Value="#1A2233"/>
+  </Style>
+
+  <Style Selector="Button.nav-active">
+    <Setter Property="Background" Value="#1A2744"/>
+    <Setter Property="Foreground" Value="#4B9EFF"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+    <Setter Property="Padding" Value="16,12"/>
+    <Setter Property="CornerRadius" Value="10"/>
+    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="FontWeight" Value="SemiBold"/>
+    <Setter Property="Width" Value="200"/>
+  </Style>
+
+  <!-- ── ListBox ── -->
+  <Style Selector="ListBox">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Padding" Value="0"/>
+  </Style>
+
+  <Style Selector="ListBoxItem">
+    <Setter Property="Background" Value="#161B27"/>
+    <Setter Property="BorderBrush" Value="#1E2840"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="CornerRadius" Value="10"/>
+    <Setter Property="Padding" Value="16,14"/>
+    <Setter Property="Margin" Value="0,0,0,8"/>
+    <Setter Property="Cursor" Value="Hand"/>
+  </Style>
+
+  <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter">
+    <Setter Property="Background" Value="#1A2030"/>
+  </Style>
+
+  <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+    <Setter Property="Background" Value="#1A2744"/>
+  </Style>
+
+  <!-- ── TabControl ── -->
+  <Style Selector="TabControl">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Padding" Value="0"/>
+  </Style>
+
+  <Style Selector="TabItem">
+    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="Foreground" Value="#64748B"/>
+    <Setter Property="Padding" Value="16,10"/>
+    <Setter Property="Background" Value="Transparent"/>
+  </Style>
+
+  <Style Selector="TabItem:selected">
+    <Setter Property="Foreground" Value="#4B9EFF"/>
+    <Setter Property="FontWeight" Value="SemiBold"/>
+  </Style>
+
+  <!-- ── CheckBox ── -->
+  <Style Selector="CheckBox">
+    <Setter Property="Foreground" Value="#94A3B8"/>
+    <Setter Property="FontSize" Value="13"/>
+  </Style>
+
+  <!-- ── ScrollViewer ── -->
+  <Style Selector="ScrollViewer">
+    <Setter Property="Background" Value="Transparent"/>
+  </Style>
+
+  <!-- ── Border.card ── -->
+  <Style Selector="Border.card">
+    <Setter Property="Background" Value="#161B27"/>
+    <Setter Property="CornerRadius" Value="14"/>
+    <Setter Property="Padding" Value="20"/>
+    <Setter Property="BorderBrush" Value="#1E2840"/>
+    <Setter Property="BorderThickness" Value="1"/>
+  </Style>
+
+  <!-- ── Border.stat-card ── -->
+  <Style Selector="Border.stat-card">
+    <Setter Property="Background" Value="#161B27"/>
+    <Setter Property="CornerRadius" Value="14"/>
+    <Setter Property="Padding" Value="20,16"/>
+    <Setter Property="BorderBrush" Value="#1E2840"/>
+    <Setter Property="BorderThickness" Value="1"/>
+  </Style>
+
 </Styles>
