@@ -24,6 +24,10 @@ public partial class Dashboard : Window
             Dispatcher.UIThread.Post(() =>
             {
                 var window = new NewTransaction(user, accountService, transactionService);
+                window.Closed += (_, _) => { 
+                    vm.RefreshTransactions();
+                    vm.RefreshAccounts();
+                };
                 window.ShowDialog(this);
             });
 
