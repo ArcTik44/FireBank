@@ -4,38 +4,47 @@
         x:Class="FireBank.NewBankAccount"
         x:DataType="vm:NewBankAccountViewModel"
         Title="Nový bankovní účet"
-        Width="600" Height="420"
-        CanResize="False">
+        Width="520" Height="460"
+        CanResize="False"
+        WindowStartupLocation="CenterScreen">
 
-    <StackPanel Margin="24" Spacing="12">
+    <Grid Margin="24">
+        <Border Classes="card" Padding="28">
+            <StackPanel Spacing="6">
+                <TextBlock Text="Nový bankovní účet" Classes="h3"/>
+                <TextBlock Text="Vyberte typ a měnu nového účtu"
+                           Classes="subtle" Margin="0,0,0,8"/>
+                <Border Classes="accent-line" Margin="0,0,0,12"/>
 
-        <TextBlock Text="Nový bankovní účet" FontSize="18" FontWeight="Bold"
-                   Margin="0,0,0,8"/>
+                <TextBlock Text="Typ účtu" Classes="label"/>
+                <ComboBox ItemsSource="{Binding AccountTypes}"
+                          SelectedItem="{Binding SelectedAccountType}"
+                          HorizontalAlignment="Stretch"/>
 
-        <TextBlock Text="Typ účtu:"/>
-        <ComboBox ItemsSource="{Binding AccountTypes}"
-                  SelectedItem="{Binding SelectedAccountType}"
-                  HorizontalAlignment="Stretch"/>
+                <TextBlock Text="Měna" Classes="label"/>
+                <ComboBox ItemsSource="{Binding Currencies}"
+                          SelectedItem="{Binding SelectedCurrency}"
+                          HorizontalAlignment="Stretch"/>
 
-        <TextBlock Text="Měna:"/>
-        <ComboBox ItemsSource="{Binding Currencies}"
-                  SelectedItem="{Binding SelectedCurrency}"
-                  HorizontalAlignment="Stretch"/>
+                <TextBlock Text="Počáteční zůstatek" Classes="label"/>
+                <NumericUpDown Value="{Binding InitialBalance}"
+                               Minimum="0"
+                               FormatString="N2"
+                               HorizontalAlignment="Stretch"/>
 
-        <TextBlock Text="Počáteční zůstatek:"/>
-        <NumericUpDown Value="{Binding InitialBalance}"
-                       Minimum="0"
-                       FormatString="N2"
-                       HorizontalAlignment="Stretch"/>
+                <TextBlock Text="{Binding ErrorMessage}" Classes="error"
+                           Margin="0,8,0,0"
+                           IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
 
-        <TextBlock Text="{Binding ErrorMessage}" Foreground="Red"
-                   IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
-
-        <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right" Margin="0,8,0,0">
-            <Button Content="Zrušit" Command="{Binding CancelCommand}" Width="100"/>
-            <Button Content="Vytvořit" Command="{Binding CreateAccountCommand}"
-                    Width="100" Classes="accent"/>
-        </StackPanel>
-
-    </StackPanel>
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12" Margin="0,20,0,0">
+                    <Button Grid.Column="0" Content="Zrušit" Classes="ghost"
+                            HorizontalAlignment="Stretch"
+                            Command="{Binding CancelCommand}"/>
+                    <Button Grid.Column="1" Content="Vytvořit účet" Classes="accent"
+                            HorizontalAlignment="Stretch"
+                            Command="{Binding CreateAccountCommand}"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </Grid>
 </Window>

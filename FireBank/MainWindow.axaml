@@ -2,11 +2,25 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="FireBank.MainWindow"
         Title="FireBank"
-        Width="800" Height="600">
+        Width="800" Height="600"
+        WindowStartupLocation="CenterScreen">
 
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="10">
-        <TextBlock Text="Vítejte ve FireBank!" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,20"/>
-        <Button Content="Přihlásit se" Width="150" VerticalAlignment="Center" HorizontalContentAlignment="Center" Click="GoToLogin_Click"/>
-        <Button Content="Registrovat se" Width="150" VerticalAlignment="Center" HorizontalContentAlignment="Center" Click="GoToRegister_Click"/>
-    </StackPanel>
+    <Grid>
+        <Border Classes="card"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Width="380" Padding="32">
+            <StackPanel Spacing="14" HorizontalAlignment="Stretch">
+                <TextBlock Text="FireBank" Classes="brand" HorizontalAlignment="Center"/>
+                <Border Classes="accent-line" Margin="0,0,0,12"/>
+
+                <Button Content="Přihlásit se"
+                        Classes="accent"
+                        HorizontalAlignment="Stretch"
+                        Click="GoToLogin_Click"/>
+                <Button Content="Registrovat se"
+                        HorizontalAlignment="Stretch"
+                        Click="GoToRegister_Click"/>
+            </StackPanel>
+        </Border>
+    </Grid>
 </Window>

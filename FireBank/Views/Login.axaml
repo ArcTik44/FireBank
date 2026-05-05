@@ -4,21 +4,38 @@
         x:Class="FireBank.Views.Login"
         x:DataType="viewmodels:LoginViewModel"
         Title="Přihlášení"
-        Width="800" Height="600">
+        Width="800" Height="600"
+        WindowStartupLocation="CenterScreen">
 
-    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="8" Width="220">
-        <TextBlock Text="Přihlášení" FontSize="20" HorizontalAlignment="Center" Margin="0,0,0,12"/>
-        <TextBlock Text="Email:"/>
-        <TextBox Text="{Binding Email}"/>
-        <TextBlock Text="Heslo:"/>
-        <TextBox Name="PasswordTextBox" PasswordChar="*" Text="{Binding Password}"/>
-        <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" 
-                   TextWrapping="Wrap" IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
-        <Button Content="Přihlásit se" HorizontalContentAlignment="Center"
-                HorizontalAlignment="Stretch" Margin="0,8,0,0"
-                Command="{Binding LoginCommand}"/>
-        <Button Content="Nemám účet – Registrovat se" HorizontalContentAlignment="Center"
-                HorizontalAlignment="Stretch"
-                Command="{Binding GoToRegisterCommand}"/>
-    </StackPanel>
+    <Grid>
+        <Border Classes="card"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Width="380" Padding="32">
+            <StackPanel Spacing="6">
+                <TextBlock Text="FireBank" Classes="brand" HorizontalAlignment="Center"/>
+                <TextBlock Text="Přihlášení do účtu"
+                           Classes="subtle" HorizontalAlignment="Center"
+                           Margin="0,0,0,8"/>
+                <Border Classes="accent-line" Margin="0,0,0,12"/>
+
+                <TextBlock Text="Email" Classes="label"/>
+                <TextBox Text="{Binding Email}" PlaceholderText="user@firebank.com"/>
+
+                <TextBlock Text="Heslo" Classes="label"/>
+                <TextBox Name="PasswordTextBox" PasswordChar="•"
+                         Text="{Binding Password}" PlaceholderText="••••••••"/>
+
+                <TextBlock Text="{Binding ErrorMessage}" Classes="error"
+                           Margin="0,8,0,0"
+                           IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+                <Button Content="Přihlásit se" Classes="accent"
+                        HorizontalAlignment="Stretch" Margin="0,16,0,0"
+                        Command="{Binding LoginCommand}"/>
+                <Button Content="Nemám účet – Registrovat se" Classes="ghost"
+                        HorizontalAlignment="Stretch"
+                        Command="{Binding GoToRegisterCommand}"/>
+            </StackPanel>
+        </Border>
+    </Grid>
 </Window>

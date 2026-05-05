@@ -3,68 +3,152 @@
         xmlns:vm="using:FireBank.ViewModels"
         x:Class="FireBank.Dashboard"
         x:DataType="vm:DashboardViewModel"
-        Title="Dashboard"
-        Width="800" Height="600">
+        Title="FireBank — Dashboard"
+        Width="960" Height="640"
+        WindowStartupLocation="CenterScreen">
 
     <DockPanel>
 
-        <!-- Hlavička -->
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal"
-                    Background="#1a73e8" Height="50" Spacing="12">
-            <TextBlock Text="{Binding WelcomeMessage}"
-                       Foreground="White" FontSize="16"
-                       VerticalAlignment="Center" Margin="16,0,0,0"/>
-            <Button Content="Odhlásit" Command="{Binding LogoutCommand}"
-                    VerticalAlignment="Center"/>
-        </StackPanel>
+        <!-- App bar -->
+        <Border DockPanel.Dock="Top" Classes="appbar">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                    <TextBlock Text="🔥" FontSize="20" VerticalAlignment="Center"/>
+                    <TextBlock Text="FireBank" Classes="brand" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal" Spacing="14"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="{Binding WelcomeMessage}"
+                               Classes="subtle"
+                               VerticalAlignment="Center"/>
+                    <TextBlock x:Name="CopyStatus"
+                               Text=""
+                               Classes="amount"
+                               VerticalAlignment="Center"
+                               IsVisible="False"/>
+                </StackPanel>
+                <Button Grid.Column="2"
+                        Content="Odhlásit"
+                        Classes="danger"
+                        Command="{Binding LogoutCommand}"
+                        VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
 
-        <TabControl>
+        <!-- Content -->
+        <Grid Margin="20">
+            <TabControl>
 
-            <!-- Účty -->
-            <TabItem Header="Účty">
-                <DockPanel>
-                    <Button DockPanel.Dock="Top" Content="+ Nový účet"
-                            Command="{Binding NewAccountCommand}"
-                            HorizontalAlignment="Left" Margin="8"/>
-                    <ListBox ItemsSource="{Binding Accounts}"
-                             SelectedItem="{Binding SelectedAccount}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal" Spacing="16">
-                                    <TextBlock Text="{Binding AccountNumber}" FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding AccountType}"/>
-                                    <TextBlock Text="{Binding Balance, StringFormat='{}{0:N2}'}"/>
-                                    <TextBlock Text="{Binding Currency}"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </DockPanel>
-            </TabItem>
+                <!-- Účty -->
+                <TabItem Header="Moje účty">
+                    <DockPanel Margin="0,12,0,0">
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal"
+                                    Spacing="8" Margin="0,0,0,12">
+                            <Button Content="+ Nový účet" Classes="accent"
+                                    Command="{Binding NewAccountCommand}"/>
+                        </StackPanel>
+                        <Border Classes="card-flat" Padding="8">
+                            <ScrollViewer>
+                                <ListBox ItemsSource="{Binding Accounts}"
+                                         SelectedItem="{Binding SelectedAccount}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto" ColumnSpacing="16">
+                                                <Border Grid.Column="0"
+                                                        Width="36" Height="36"
+                                                        CornerRadius="10"
+                                                        Background="{DynamicResource Surface3Brush}"
+                                                        BorderBrush="{DynamicResource AccentDeepBrush}"
+                                                        BorderThickness="1">
+                                                    <TextBlock Text="💳" FontSize="16"
+                                                               HorizontalAlignment="Center"
+                                                               VerticalAlignment="Center"/>
+                                                </Border>
+                                                <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+                                                    <SelectableTextBlock Text="{Binding AccountNumber}"
+                                                                         FontWeight="SemiBold"
+                                                                         Foreground="{DynamicResource TextPrimaryBrush}"
+                                                                         SelectionBrush="{DynamicResource AccentDeepBrush}"/>
+                                                    <TextBlock Text="{Binding AccountType}" Classes="muted"/>
+                                                </StackPanel>
+                                                <Button Grid.Column="2"
+                                                        Classes="ghost copy-btn"
+                                                        ToolTip.Tip="Kopírovat číslo účtu"
+                                                        Tag="{Binding AccountNumber}"
+                                                        Click="CopyAccountNumber_Click"
+                                                        VerticalAlignment="Center">
+                                                    <StackPanel Orientation="Horizontal" Spacing="6">
+                                                        <TextBlock Text="📋" FontSize="14"/>
+                                                        <TextBlock Text="Kopírovat"/>
+                                                    </StackPanel>
+                                                </Button>
+                                                <TextBlock Grid.Column="3"
+                                                           Text="{Binding Balance, StringFormat='{}{0:N2}'}"
+                                                           Classes="amount"
+                                                           VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="4"
+                                                           Text="{Binding Currency}"
+                                                           Classes="subtle"
+                                                           VerticalAlignment="Center"
+                                                           Margin="6,0,0,0"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </ScrollViewer>
+                        </Border>
+                    </DockPanel>
+                </TabItem>
 
-            <!-- Transakce -->
-            <TabItem Header="Transakce">
-                <DockPanel>
-                    <Button DockPanel.Dock="Top" Content="+ Nová transakce"
-                            Command="{Binding NewTransactionCommand}"
-                            HorizontalAlignment="Left" Margin="8"/>
-                    <ListBox ItemsSource="{Binding Transactions}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal" Spacing="16">
-                                    <TextBlock Text="{Binding Date, StringFormat='{}{0:dd.MM.yyyy}'}"/>
-                                    <TextBlock Text="{Binding FromAccountNumber}"/>
-                                    <TextBlock Text="→"/>
-                                    <TextBlock Text="{Binding ToAccountNumber}"/>
-                                    <TextBlock Text="{Binding Amount, StringFormat='{}{0:N2}'}" FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding Note}" Foreground="Gray"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </DockPanel>
-            </TabItem>
+                <!-- Transakce -->
+                <TabItem Header="Transakce">
+                    <DockPanel Margin="0,12,0,0">
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal"
+                                    Spacing="8" Margin="0,0,0,12">
+                            <Button Content="+ Nová transakce" Classes="accent"
+                                    Command="{Binding NewTransactionCommand}"/>
+                        </StackPanel>
+                        <Border Classes="card-flat" Padding="8">
+                            <ScrollViewer>
+                                <ListBox ItemsSource="{Binding Transactions}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto" ColumnSpacing="16">
+                                                <TextBlock Grid.Column="0"
+                                                           Text="{Binding Date, StringFormat='{}{0:dd.MM.yyyy}'}"
+                                                           Classes="muted"
+                                                           VerticalAlignment="Center"/>
+                                                <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                                            Spacing="8" VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding FromAccountNumber}"/>
+                                                    <TextBlock Text="→" Foreground="{DynamicResource AccentBrush}"/>
+                                                    <TextBlock Text="{Binding ToAccountNumber}"/>
+                                                </StackPanel>
+                                                <TextBlock Grid.Column="2"
+                                                           Text="{Binding Amount, StringFormat='{}{0:N2}'}"
+                                                           Classes="amount"
+                                                           VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="3"
+                                                           Text="CZK"
+                                                           Classes="subtle"
+                                                           VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="4"
+                                                           Text="{Binding Note}"
+                                                           Classes="muted"
+                                                           VerticalAlignment="Center"
+                                                           Margin="12,0,0,0"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </ScrollViewer>
+                        </Border>
+                    </DockPanel>
+                </TabItem>
 
-        </TabControl>
+            </TabControl>
+        </Grid>
     </DockPanel>
 </Window>

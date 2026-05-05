@@ -4,51 +4,75 @@
         x:Class="FireBank.NewTransaction"
         x:DataType="vm:NewTransactionViewModel"
         Title="Nová transakce"
-        Width="600" Height="420"
-        CanResize="False">
+        Width="540" Height="540"
+        CanResize="False"
+        WindowStartupLocation="CenterScreen">
 
-    <StackPanel Margin="24" Spacing="12">
+    <Grid Margin="24">
+        <Border Classes="card" Padding="28">
+            <StackPanel Spacing="6">
+                <TextBlock Text="Nová transakce" Classes="h3"/>
+                <TextBlock Text="Odešlete prostředky na jiný účet"
+                           Classes="subtle" Margin="0,0,0,8"/>
+                <Border Classes="accent-line" Margin="0,0,0,12"/>
 
-        <TextBlock Text="Nová transakce" FontSize="18" FontWeight="Bold"
-                   Margin="0,0,0,8"/>
+                <TextBlock Text="Z účtu" Classes="label"/>
+                <ComboBox ItemsSource="{Binding UserAccounts}"
+                          SelectedItem="{Binding SelectedFromAccount}"
+                          HorizontalAlignment="Stretch">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DisplayName}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <TextBlock Text="{Binding AvailableBalance}" Classes="muted"/>
 
-        <TextBlock Text="Z účtu:"/>
-        <ComboBox ItemsSource="{Binding UserAccounts}"
-                  SelectedItem="{Binding SelectedFromAccount}"
-                  HorizontalAlignment="Stretch">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding DisplayName}"/>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
-        <TextBlock Text="{Binding AvailableBalance}" Foreground="Gray" FontSize="12"/>
+                <TextBlock Text="Na účet (číslo účtu)" Classes="label"/>
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                    <TextBox Grid.Column="0"
+                             Name="ToAccountNumberBox"
+                             Text="{Binding ToAccountNumber}"
+                             PlaceholderText="1234567890/0100"
+                             HorizontalAlignment="Stretch"/>
+                    <Button Grid.Column="1"
+                            Classes="ghost"
+                            ToolTip.Tip="Vložit ze schránky"
+                            Click="PasteAccountNumber_Click"
+                            VerticalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal" Spacing="6">
+                            <TextBlock Text="📥" FontSize="14"/>
+                            <TextBlock Text="Vložit"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+                <TextBlock Text="Tip: Zkopíruj číslo účtu z dashboardu a vlož sem."
+                           Classes="muted"/>
 
-        <TextBlock Text="Na účet (číslo účtu):"/>
-        <TextBox Text="{Binding ToAccountNumber}"
-                 PlaceholderText="např. 1234567890/0100"
-                 HorizontalAlignment="Stretch"/>
+                <TextBlock Text="Částka" Classes="label"/>
+                <NumericUpDown Value="{Binding Amount}"
+                               Minimum="0"
+                               FormatString="N2"
+                               HorizontalAlignment="Stretch"/>
 
-        <TextBlock Text="Částka:"/>
-        <NumericUpDown Value="{Binding Amount}"
-                       Minimum="0"
-                       FormatString="N2"
-                       HorizontalAlignment="Stretch"/>
+                <TextBlock Text="Poznámka" Classes="label"/>
+                <TextBox Text="{Binding Note}"
+                         PlaceholderText="Volitelná poznámka"
+                         HorizontalAlignment="Stretch"/>
 
-        <TextBlock Text="Poznámka:"/>
-        <TextBox Text="{Binding Note}"
-                 PlaceholderText="Volitelná poznámka"
-                 HorizontalAlignment="Stretch"/>
+                <TextBlock Text="{Binding ErrorMessage}" Classes="error"
+                           Margin="0,8,0,0"
+                           IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
 
-        <TextBlock Text="{Binding ErrorMessage}" Foreground="Red"
-                   IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
-
-        <StackPanel Orientation="Horizontal" Spacing="8"
-                    HorizontalAlignment="Right" Margin="0,8,0,0">
-            <Button Content="Zrušit" Command="{Binding CancelCommand}" Width="100"/>
-            <Button Content="Odeslat" Command="{Binding SendCommand}"
-                    Width="100" Classes="accent"/>
-        </StackPanel>
-
-    </StackPanel>
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12" Margin="0,20,0,0">
+                    <Button Grid.Column="0" Content="Zrušit" Classes="ghost"
+                            HorizontalAlignment="Stretch"
+                            Command="{Binding CancelCommand}"/>
+                    <Button Grid.Column="1" Content="Odeslat" Classes="accent"
+                            HorizontalAlignment="Stretch"
+                            Command="{Binding SendCommand}"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </Grid>
 </Window>
