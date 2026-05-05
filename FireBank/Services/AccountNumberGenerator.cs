@@ -70,7 +70,7 @@ namespace FireBank.Services
             iban = iban.Replace(" ", "").ToUpper();
             if (iban.Length < 4) return false;
 
-            // Přesuň první 4 znaky na konec a převeď písmena na čísla
+            
             string rearranged = iban[4..] + iban[..4];
             string numeric = ConvertIBANToNumeric(rearranged);
 
@@ -94,14 +94,14 @@ namespace FireBank.Services
             return ValidateMod11(segments[0]);
         }
 
-        // ── Privátní pomocné metody ─────────────────────────────────────
+        
 
         private static string GeneratePrefix() => GetRandomNumber(1, 999999).ToString();
         private static string GenerateAccountNumber() => GetRandomNumber(1000000, 9999999999).ToString();
 
         private static long GetRandomNumber(long min, long max)
         {
-            // Kryptograficky bezpečné náhodné číslo v rozsahu
+            
             long range = max - min + 1;
             long result = (long)(RandomNumberGenerator.GetInt32(int.MaxValue) / (double)int.MaxValue * range) + min;
             return result;
@@ -127,7 +127,7 @@ namespace FireBank.Services
 
         private static string CalculateIBANCheckDigits(string countryCode, string bban)
         {
-            // Přesuň kód země s "00" na konec a spočítej mod 97
+            
             string rearranged = bban + countryCode + "00";
             string numeric = ConvertIBANToNumeric(rearranged);
             long remainder = 98 - ModuloCheck(numeric);
